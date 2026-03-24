@@ -1714,38 +1714,99 @@
       reader.onload = function(ev) {
         try {
           const texto = ev.target.result;
-          const linhas = texto.split(/\r?\n/).filter(l => l.trim());
-          if (linhas.length < 2) { criarErroImport = "Arquivo vazio ou sem dados."; renderCriar(); return; }
-          const header = linhas[0].split(",").map(h => h.trim().toLowerCase().replace(/["\s]/g,""));
+
+          // Parser de linha CSV que respeita campos entre aspas
+          function parseCSVRow(row) {
+            const result = []; let cur = '', inQuote = false;
+            for (let i = 0; i < row.length; i++) {
+              const ch = row[i];
+              if (ch === '"') { inQuote = !inQuote; }
+              else if (ch === ',' && !inQuote) { result.push(cur.trim()); cur = ''; }
+              else { cur += ch; }
+            }
+            result.push(cur.trim());
+            return result;
+          }
+
+          // Limpa canal: "🔵 HUB — Instagram" → "Instagram"
+          function limparCanal(val) {
+            if (!val) return "Instagram";
+            const partes = val.split(/[—\-]/);
+            const ultimo = partes[partes.length - 1].replace(/[^\w\sÀ-ú]/gu, '').trim();
+            const canaisConhecidos = ["Instagram","YouTube","LinkedIn","Blog","Email","Site","TikTok","WhatsApp"];
+            return canaisConhecidos.find(c => ultimo.toLowerCase().includes(c.toLowerCase())) || ultimo || "Instagram";
+          }
+
+          // Limpa criador: "🎬 Adriano" → "Adriano"
+          function limparCriador(val) {
+            if (!val) return "Paulo";
+            const clean = val.replace(/[^\w\sÀ-ú]/gu, '').trim();
+            const conhecidos = ["Paulo","Adriano","Let","Cadu","Gabriella"];
+            return conhecidos.find(n => clean.includes(n)) || clean.split(/\s+/)[0] || "Paulo";
+          }
+
+          const todasLinhas = texto.split(/\r?\n/);
+
+          // Detecta a linha do cabeçalho real (procura "titulo" ou "título" nas primeiras 10 linhas)
+          let headerIdx = -1;
+          for (let i = 0; i < Math.min(todasLinhas.length, 10); i++) {
+            const lower = todasLinhas[i].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+            if (lower.includes("titulo") || lower.includes("conteudo")) { headerIdx = i; break; }
+          }
+          if (headerIdx === -1) { criarErroImport = "Cabeçalho não encontrado. Verifique se há coluna 'Titulo'."; renderCriar(); return; }
+
+          const header = parseCSVRow(todasLinhas[headerIdx]).map(h =>
+            h.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9_]/g,"")
+          );
           const idxTitulo     = header.findIndex(h => h.includes("titulo") || h.includes("conteudo"));
           const idxCanal      = header.findIndex(h => h.includes("canal"));
           const idxCriador    = header.findIndex(h => h.includes("criador") || h.includes("responsavel"));
           const idxData       = header.findIndex(h => h.includes("data") || h.includes("postagem"));
           const idxPrioridade = header.findIndex(h => h.includes("prioridade"));
           const idxObs        = header.findIndex(h => h.includes("obs") || h.includes("nota"));
+
           if (idxTitulo === -1) { criarErroImport = "Coluna 'Titulo' não encontrada. Verifique o modelo."; renderCriar(); return; }
+
           const leadTime = parseInt(document.getElementById('lead-time-input')?.value || 5);
-          const itens = linhas.slice(1).map((linha, i) => {
-            const cols = linha.split(",").map(c => c.trim().replace(/^"|"$/g,""));
-            const dataBruta = idxData>=0 ? cols[idxData]||"" : "";
-            const dataFmt = dataBruta.match(/^\d{4}-\d{2}-\d{2}$/) ? dataBruta
-              : dataBruta.match(/^(\d{2})\/(\d{2})\/(\d{4})$/) ? dataBruta.replace(/(\d{2})\/(\d{2})\/(\d{4})/,"$3-$2-$1")
-              : fmt(addDias(new Date(2026,2,23), i+1));
-            const prioridadeBruta = idxPrioridade>=0 ? cols[idxPrioridade]||"Média" : "Média";
-            const prioridade = ["Alta","Média","Baixa"].includes(prioridadeBruta) ? prioridadeBruta : "Média";
-            return {
-              id: randomId(),
-              titulo:        cols[idxTitulo] || `Item ${i+1}`,
-              canal:         idxCanal>=0 ? cols[idxCanal]||"Instagram" : "Instagram",
-              criador:       idxCriador>=0 ? cols[idxCriador]||"Paulo" : "Paulo",
-              data_postagem: dataFmt,
-              prazo_entrega: calcPrazoEntrega(dataFmt, leadTime),
-              status:        "backlog",
-              prioridade,
-              obs:           idxObs>=0 ? cols[idxObs]||"" : "",
-              copy:"", entrega_link:"", categoria:"mentoria", tipo_desempenho:"mentoria"
-            };
-          }).filter(it => it.titulo.trim());
+          const HOJE_BASE = new Date(2026, 2, 23);
+
+          const itens = todasLinhas.slice(headerIdx + 1)
+            .filter(l => {
+              const t = l.trim();
+              if (!t) return false;
+              // Ignora linhas de legenda/metadados
+              const low = t.toLowerCase();
+              if (low.startsWith("legenda") || low.startsWith("calendário") || /^[🔴🟡🟢⚠️🎬🎨✅]/.test(t)) return false;
+              return true;
+            })
+            .map((linha, i) => {
+              const cols = parseCSVRow(linha);
+              const tituloBruto = (cols[idxTitulo]||"").trim();
+              if (!tituloBruto) return null;
+
+              const dataBruta = idxData>=0 ? cols[idxData]||"" : "";
+              const dataFmt = dataBruta.match(/^\d{4}-\d{2}-\d{2}$/) ? dataBruta
+                : dataBruta.match(/^(\d{2})\/(\d{2})\/(\d{4})$/) ? dataBruta.replace(/(\d{2})\/(\d{2})\/(\d{4})/,"$3-$2-$1")
+                : fmt(addDias(HOJE_BASE, i+1));
+
+              const prioridadeBruta = idxPrioridade>=0 ? cols[idxPrioridade]||"Média" : "Média";
+              const prioridade = ["Alta","Média","Baixa"].find(p => prioridadeBruta.includes(p)) || "Média";
+
+              return {
+                id: randomId(),
+                titulo:        tituloBruto,
+                canal:         limparCanal(idxCanal>=0 ? cols[idxCanal] : ""),
+                criador:       limparCriador(idxCriador>=0 ? cols[idxCriador] : ""),
+                data_postagem: dataFmt,
+                prazo_entrega: calcPrazoEntrega(dataFmt, leadTime),
+                status:        "backlog",
+                prioridade,
+                obs:           idxObs>=0 ? cols[idxObs]||"" : "",
+                copy:"", entrega_link:"", categoria:"mentoria", tipo_desempenho:"mentoria",
+                entrega_desc:"", entrega_tipo:"", entrega_data:"", copy_autor:"", copy_data:""
+              };
+            }).filter(Boolean);
+
           if (itens.length === 0) { criarErroImport = "Nenhum item válido encontrado."; renderCriar(); return; }
           criarPreviewImport = itens;
           renderCriar();
