@@ -1,0 +1,2373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Marketing · Tutory</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 240px;
+      background: #0f172a;
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #1e293b;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .sidebar-logo {
+      padding: 20px 16px;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .logo-subtitle {
+      font-size: 12px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-group {
+      padding: 16px 0;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .nav-group-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0 16px 12px 16px;
+    }
+
+    .nav-item {
+      padding: 10px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #94a3b8;
+      font-size: 14px;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover {
+      color: #e2e8f0;
+      background: rgba(99, 102, 241, 0.05);
+    }
+
+    .nav-item.active {
+      background: #6366f1;
+      color: white;
+    }
+
+    .nav-item-badge {
+      margin-left: auto;
+      background: #ef4444;
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 10px;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .status-alerts {
+      padding: 16px;
+      margin: 12px 8px 0 8px;
+      border-radius: 8px;
+      background: #1e293b;
+      font-size: 12px;
+      border: 1px solid #334155;
+    }
+
+    .alert-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      color: #e2e8f0;
+    }
+
+    .alert-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .visualizar-como {
+      padding: 16px;
+      margin: 12px 8px 0 8px;
+      border-radius: 8px;
+      background: #1e293b;
+      border: 1px solid #334155;
+    }
+
+    .visualizar-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+
+    .person-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .person-btn {
+      padding: 8px 12px;
+      background: #334155;
+      color: #e2e8f0;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      text-align: left;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .person-btn:hover {
+      background: #475569;
+    }
+
+    .person-btn.active {
+      background: #6366f1;
+      color: white;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      padding: 16px 12px;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .novo-conteudo-btn {
+      width: 100%;
+      padding: 12px;
+      background: #a855f7;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .novo-conteudo-btn:hover {
+      background: #9333ea;
+    }
+
+    .lead-time-input {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+
+    .lead-time-input input {
+      width: 40px;
+      padding: 4px 6px;
+      background: #334155;
+      border: 1px solid #475569;
+      color: white;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 56px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: absolute;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+        width: 280px;
+        z-index: 999;
+      }
+
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+
+      .container {
+        position: relative;
+      }
+
+      .hamburger {
+        display: block;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: #0f172a;
+        font-size: 20px;
+        margin-right: 12px;
+      }
+    }
+
+    .hamburger {
+      display: none;
+    }
+
+    /* CONTENT STYLES */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-weight: 600;
+      color: #0f172a;
+      flex: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      color: #64748b;
+      margin: 12px 0;
+    }
+
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status-pill {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      color: white;
+      white-space: nowrap;
+    }
+
+    .priority-badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .priority-alta { background: #fee2e2; color: #dc2626; }
+    .priority-media { background: #fef3c7; color: #d97706; }
+    .priority-baixa { background: #dcfce7; color: #16a34a; }
+
+    /* KANBAN */
+    .kanban-container {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 20px;
+    }
+
+    .kanban-column {
+      flex: 0 0 300px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .kanban-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      font-weight: 600;
+      color: #0f172a;
+      font-size: 14px;
+    }
+
+    .kanban-header-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .kanban-card {
+      background: white;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-left: 4px solid;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 13px;
+    }
+
+    .kanban-card:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    /* CALENDAR */
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .calendar-nav {
+      display: flex;
+      gap: 12px;
+    }
+
+    .calendar-nav button {
+      padding: 8px 12px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .calendar-nav button:hover {
+      background: #f1f5f9;
+    }
+
+    .calendar-grid {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+    }
+
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .calendar-weekday {
+      text-align: center;
+      font-weight: 600;
+      color: #64748b;
+      font-size: 12px;
+      padding: 8px 0;
+    }
+
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .calendar-day {
+      aspect-ratio: 1;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+      background: white;
+    }
+
+    .calendar-day:hover {
+      background: #f1f5f9;
+    }
+
+    .calendar-day.other-month {
+      color: #cbd5e1;
+    }
+
+    .calendar-day.has-content::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      background: #6366f1;
+      border-radius: 50%;
+    }
+
+    /* STATS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .stat-change {
+      font-size: 12px;
+      color: #22c55e;
+      margin-top: 8px;
+    }
+
+    /* PERFORMANCE BARS */
+    .performance-item {
+      margin-bottom: 16px;
+    }
+
+    .performance-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .performance-bar {
+      width: 100%;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .performance-fill {
+      height: 100%;
+      transition: width 0.3s;
+    }
+
+    /* TABLES */
+    .table-container {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead {
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    /* MODALS */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-header {
+      padding: 24px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #6366f1;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #4f46e5;
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #0f172a;
+      border: 1px solid #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #0f172a;
+      font-size: 14px;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #0f172a;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    /* COLORS BY CANAL */
+    .blog { border-left-color: #6366f1; }
+    .instagram { border-left-color: #ec4899; }
+    .linkedin { border-left-color: #0ea5e9; }
+    .email { border-left-color: #f59e0b; }
+    .youtube { border-left-color: #ef4444; }
+    .tiktok { border-left-color: #14b8a6; }
+    .site { border-left-color: #8b5cf6; }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* AVATAR */
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: white;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .avatar-small {
+      width: 20px;
+      height: 20px;
+      font-size: 11px;
+    }
+
+    .text-sm {
+      font-size: 12px;
+    }
+
+    .text-gray {
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-text">✦ Tutory</div>
+        <div class="logo-subtitle">Conteúdo</div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">VISÃO GERAL</div>
+        <div class="nav-item active" data-section="overview">📊 Overview</div>
+        <div class="nav-item" data-section="calendario">📅 Calendário</div>
+        <div class="nav-item" data-section="projetos">📋 Projetos</div>
+        <div class="nav-item" data-section="solicitacoes">
+          📩 Solicitações
+          <span class="nav-item-badge" id="solicitacoes-badge" style="display:none;">0</span>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">EQUIPE</div>
+        <div class="nav-item" data-section="fila">👤 Fila por Pessoa</div>
+        <div class="nav-item" data-section="workflow">🔄 Fluxo de Aprovação</div>
+        <div class="nav-item" data-section="desempenho">📈 Desempenho</div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">CONTEÚDO</div>
+        <div class="nav-item" data-section="tipos_conteudo">🗂️ Por Tipo de Conteúdo</div>
+        <div class="nav-item" data-section="instagram">📸 Instagram</div>
+        <div class="nav-item" data-section="criar">✍️ Criar Conteúdo</div>
+      </div>
+
+      <div class="status-alerts">
+        <div class="alert-row"><span class="alert-dot" style="background: #ef4444;"></span> <span id="alert-atrasados">0 Atrasados</span></div>
+        <div class="alert-row"><span class="alert-dot" style="background: #f59e0b;"></span> <span id="alert-sem-copy">0 Sem Copy</span></div>
+        <div class="alert-row"><span class="alert-dot" style="background: #eab308;"></span> <span id="alert-cadu">0 na fila Cadu</span></div>
+        <div class="alert-row"><span class="alert-dot" style="background: #06b6d4;"></span> <span id="alert-let">0 na fila Let</span></div>
+      </div>
+
+      <div class="visualizar-como">
+        <div class="visualizar-label">VISUALIZAR COMO</div>
+        <div class="person-list" id="person-list"></div>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="novo-conteudo-btn" onclick="showCreateModal()">+ Novo conteúdo</button>
+        <div class="lead-time-input">
+          <span>Lead time:</span>
+          <input type="number" id="lead-time-input" value="5" min="1" max="30">
+          <span>dias</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <div class="topbar">
+        <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">☰</button>
+        <span id="topbar-title">Overview</span>
+      </div>
+      <div class="content-area" id="content-area"></div>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  <div class="modal-overlay" id="modal-content">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Detalhes do Conteúdo</h2>
+        <button class="modal-close" onclick="closeModals()">✕</button>
+      </div>
+      <div class="modal-body" id="modal-content-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModals()">Fechar</button>
+        <button class="btn btn-primary" id="modal-action-btn" onclick="executeContentAction()">Ação</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-create">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Novo Conteúdo</h2>
+        <button class="modal-close" onclick="closeModals()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Título</label>
+          <input type="text" class="form-input" id="form-titulo">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Canal</label>
+          <select class="form-select" id="form-canal"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Categoria</label>
+          <select class="form-select" id="form-categoria"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Criador</label>
+          <select class="form-select" id="form-criador"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Prioridade</label>
+          <select class="form-select" id="form-prioridade">
+            <option value="baixa">Baixa</option>
+            <option value="media">Média</option>
+            <option value="alta">Alta</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data de Postagem</label>
+          <input type="date" class="form-input" id="form-data">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Observações</label>
+          <textarea class="form-textarea" id="form-obs"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModals()">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveContent()">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-copy">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Gerar Copy</h2>
+        <button class="modal-close" onclick="closeModals()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Tipo</label>
+          <select class="form-select" id="gen-tipo">
+            <option value="carrossel">Carrossel</option>
+            <option value="reels">Reels</option>
+            <option value="estatica">Estática</option>
+            <option value="legenda">Legenda</option>
+            <option value="stories">Stories</option>
+            <option value="comunidade">Comunidade</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tema</label>
+          <input type="text" class="form-input" id="gen-tema" placeholder="Ex: estudar para ENEM">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pontos (um por linha)</label>
+          <textarea class="form-textarea" id="gen-pontos" placeholder="Ponto 1&#10;Ponto 2&#10;Ponto 3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModals()">Cancelar</button>
+        <button class="btn btn-primary" onclick="generateCopy()">Gerar Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== DATA CONSTANTS =====
+    const WORKFLOW = [
+      { id: "backlog", label: "Backlog", cor: "#94a3b8", icon: "○" },
+      { id: "em_criacao", label: "Em criação", cor: "#3b82f6", icon: "✏️" },
+      { id: "ag_aprovacao", label: "Aguardando Cadu", cor: "#f59e0b", icon: "⏳" },
+      { id: "aprovado", label: "Aprovado por Cadu", cor: "#a855f7", icon: "✓" },
+      { id: "pronto_let", label: "Pronto p/ Let postar", cor: "#06b6d4", icon: "📤" },
+      { id: "publicado", label: "Publicado", cor: "#22c55e", icon: "✅" },
+    ];
+
+    const CANAL_COR = {
+      Blog: "#6366f1", Instagram: "#ec4899", LinkedIn: "#0ea5e9",
+      Email: "#f59e0b", YouTube: "#ef4444", TikTok: "#14b8a6", Site: "#8b5cf6"
+    };
+    const CANAIS = ["Blog", "Instagram", "LinkedIn", "Email", "YouTube", "TikTok", "Site"];
+    const CRIADORES = ["Paulo", "Adriano"];
+    const APROVADOR = "Cadu";
+    const PUBLICADOR = "Let";
+    const GESTORA = "Gabriella";
+
+    const LINHAS_EDITORIAIS = [
+      { id: "educacao",    label: "📚 Educação e Metodologia"   },
+      { id: "resultados",  label: "🏆 Resultados e Cases"       },
+      { id: "motivacao",   label: "💪 Motivação e Mindset"      },
+      { id: "produto",     label: "🚀 Produto e Features"       },
+      { id: "bastidores",  label: "🎬 Bastidores da Tutory"     },
+      { id: "dicas",       label: "💡 Dicas de Estudo"          },
+      { id: "enem",        label: "📝 ENEM e Vestibular"        },
+      { id: "engajamento", label: "💬 Engajamento e Comunidade" },
+    ];
+    const FORMATOS_COPY = [
+      { id: "tutorial",     label: "Tutorial / Passo a passo",  icon: "📋" },
+      { id: "demonstracao", label: "Demonstração",              icon: "🎯" },
+      { id: "dica_rapida",  label: "Dica rápida",               icon: "⚡" },
+      { id: "bastidores",   label: "Bastidores / Storytelling", icon: "🎬" },
+      { id: "lista",        label: "Lista / Ranking",           icon: "🔢" },
+      { id: "educativo",    label: "Educativo com dados",       icon: "📊" },
+      { id: "antes_depois", label: "Antes e Depois",            icon: "🔄" },
+      { id: "polemico",     label: "Polêmico / Opinião",        icon: "🔥" },
+    ];
+    const TIPOS_CONTEUDO_CRIAR = [
+      { id: "carrossel", label: "Carrossel",     icon: "📑" },
+      { id: "reels",     label: "Reels / Vídeo", icon: "🎬" },
+      { id: "estatica",  label: "Arte Estática", icon: "🖼"  },
+      { id: "legenda",   label: "Legenda",       icon: "💬" },
+    ];
+    const PLATAFORMAS_CRIAR = [
+      { id: "mentoria", label: "Mentoria", cor: "#6366f1" },
+      { id: "hub",      label: "Hub",      cor: "#ec4899" },
+      { id: "ambos",    label: "Ambos",    cor: "#8b5cf6" },
+    ];
+
+    const GUIA_SECOES = [
+      { id:"estruturas", icon:"🏗", titulo:"Estruturas de Roteiro", cor:"#6366f1", blocos:[
+        { nome:"AIDA", sub:"Atenção → Interesse → Desejo → Ação", desc:"Clássico para venda direta e anúncios pagos.", template:"1. ATENÇÃO: Frase de impacto que para o scroll.\n2. INTERESSE: Dado, revelação ou pergunta que aprofunda.\n3. DESEJO: Mostre a transformação / resultado.\n4. AÇÃO: Um CTA único e direto." },
+        { nome:"PAS", sub:"Problema → Agitação → Solução", desc:"Maior impacto emocional. Ideal para comunidade, e-mail e reels.", template:"1. PROBLEMA: Nomeie a dor que a pessoa já sente.\n2. AGITAÇÃO: Aprofunde as consequências do problema.\n3. SOLUÇÃO: Apresente a saída de forma clara e direta." },
+        { nome:"Storytelling", sub:"Contexto → Conflito → Virada → Lição + CTA", desc:"Gera conexão e autoridade. Alto compartilhamento e salvamento.", template:"1. CONTEXTO: Situe a pessoa em um cenário familiar.\n2. CONFLITO: Apresente um problema real.\n3. VIRADA: O que mudou / o que foi descoberto.\n4. LIÇÃO + CTA: Extrai o aprendizado e fecha com ação natural." },
+        { nome:"Hook → Valor → CTA", sub:"O mais simples e subestimado", desc:"Ótimo para reels curtos e posts de alto engajamento.", template:"1. HOOK: Frase brutal nos primeiros segundos.\n2. VALOR: Entrega pura de conteúdo / insight.\n3. CTA: Simples e direto — uma ação apenas." },
+      ]},
+      { id:"hook", icon:"🎯", titulo:"Anatomia do Hook", cor:"#ec4899", blocos:[
+        { nome:"Curiosidade", sub:"Provoca sem entregar", desc:"", template:"\"O que ninguém te conta sobre [tema]...\"\n\"O erro que [grupo] comete sem perceber...\"" },
+        { nome:"Contradição", sub:"Quebra expectativa", desc:"", template:"\"Para de fazer [ação comum] se você quer [resultado].\"\n\"[Crença popular] está errada — e isso está custando seus resultados.\"" },
+        { nome:"Promessa direta", sub:"Entrega o resultado", desc:"", template:"\"Em [tempo] aplicando isso você vai [resultado concreto].\"\n\"[N] passos para [transformação específica].\"" },
+        { nome:"Identificação", sub:"Espelha a dor", desc:"", template:"\"Se você sente que [dor específica]...\"\n\"Você trabalha muito mas os resultados não aparecem?\"" },
+        { nome:"Número + Promessa", sub:"Alta retenção", desc:"", template:"\"[N] erros que destroem [resultado] antes do [momento].\"\n\"[N] coisas que todo [perfil] deveria saber sobre [tema].\"" },
+      ]},
+      { id:"cta", icon:"📣", titulo:"Tipos de CTA por Objetivo", cor:"#f59e0b", blocos:[
+        { nome:"Engajamento", sub:"Comentários, salvamentos e compartilhamentos", desc:"Regra de ouro: um conteúdo, um CTA.", template:"\"Comenta aqui qual faz mais sentido pra você.\"\n\"Salva isso pra não perder.\"\n\"Compartilha com quem precisa ver.\"" },
+        { nome:"Geração de Lead", sub:"DM e link na bio", desc:"", template:"\"Manda uma DM com a palavra [X].\"\n\"Clica no link da bio.\"" },
+        { nome:"Venda Direta", sub:"Urgência e ação imediata", desc:"", template:"\"Acessa agora.\"\n\"Garanta sua vaga.\"\n\"Últimas horas — [benefício] encerra hoje.\"" },
+      ]},
+      { id:"reels", icon:"🎬", titulo:"Copy para Reels", cor:"#8b5cf6", blocos:[
+        { nome:"Roteiro de Reels", sub:"Hook → Desenvolvimento → CTA", desc:"Cada frase precisa justificar sua presença. Se você consegue tirar uma frase e o roteiro continuar fazendo sentido, tire.", template:"[0–3s] HOOK:\n\"[Frase de impacto — gera curiosidade ou identificação]\"\n\n[3–45s] DESENVOLVIMENTO:\n• [Ponto 1 — entrega o que foi prometido]\n• [Ponto 2]\n• [Ponto 3]\n\n[Últimos 5s] CTA:\n\"[Uma ação: salvar / comentar / DM / link na bio]\"" },
+        { nome:"Legenda do Reels", sub:"Linha 1 repete o hook", desc:"Hashtags no final, nunca no meio.", template:"[Linha 1 — repete o hook para quem assiste sem som]\n[Linhas 2–4 — contexto curto]\n[Última linha — CTA único]\n\n#hashtag1 #hashtag2 #hashtag3" },
+      ]},
+      { id:"estatico", icon:"🖼", titulo:"Copy para Arte Estática", cor:"#06b6d4", blocos:[
+        { nome:"Copy na Imagem", sub:"Máximo 7 palavras — funciona sozinha", desc:"Tipografia e contraste fazem parte do copy.", template:"Fórmulas:\n✦ Afirmação forte: \"Você não precisa de [X]. Precisa de [Y].\"\n✦ Contradição: \"[Ação comum] não é estratégia. É [outra coisa].\"\n✦ Pergunta de identificação: \"Você está [verbo A] ou só [verbo B]?\"\n✦ Dado impactante: \"[N]% das pessoas [comportamento surpreendente].\"" },
+        { nome:"Legenda do Estático", sub:"Começa com reforço do que está na imagem", desc:"", template:"[Linha 1 — ancora o tema]\n[Linhas 2–4 — desenvolve a ideia central]\n[Última linha — CTA único]" },
+      ]},
+      { id:"carrossel", icon:"📑", titulo:"Copy para Carrossel", cor:"#22c55e", blocos:[
+        { nome:"Estrutura por Slide", sub:"Uma ideia por slide — dois conceitos aumentam abandono", desc:"Use numeração para aumentar salvamentos.", template:"📌 SLIDE 1 (Capa):\n\"[Promessa clara ou contradição]\" — parte 1/[N]\n\n📌 SLIDES 2 a N-1 (Conteúdo):\nTítulo curto no topo + explicação embaixo. Uma ideia por slide.\n\n📌 SLIDE N-1 (Prova):\nCase, resultado, depoimento ou dado de credibilidade.\n\n📌 SLIDE N (CTA):\n\"[Uma ação: salvar / DM com X / link na bio]\"" },
+        { nome:"Legenda do Carrossel", sub:"Hook + instrução de arrastar", desc:"", template:"[Hook que repete o slide 1]\n[Frase de contexto em 1–2 linhas]\n\"Arrasta pro lado →\"" },
+      ]},
+      { id:"comunidade", icon:"💬", titulo:"Copy para Comunidade", cor:"#f97316", blocos:[
+        { nome:"Sequência de Vendas", sub:"4 mensagens — nunca pule etapas", desc:"Tom: escreva como se enviasse para um amigo próximo. Sem formalidade.", template:"MSG 1 — Aquecimento (2–3 dias antes):\n[Entregue valor puro sem pedir nada — dica, insight ou dado relevante]\n\nMSG 2 — Dor + Contexto (PAS):\n[Nomeie o problema → aprofunde as consequências]\n\nMSG 3 — Oferta:\n\"[Produto/serviço] é pra você que [dor] e quer [resultado].\nEm [tempo], você vai [transformação]. [Link]\"\n\nMSG 4 — Urgência real:\n\"Últimas [N] horas. Depois desse prazo [o que encerra]. [Link]\"" },
+        { nome:"Engajamento em Eventos", sub:"4 fases: Antecipação → Confirmação → Abertura → Pós-evento", desc:"", template:"FASE 1 — Antecipação (3–5 dias antes):\n\"Prepara que semana que vem vai ter algo exclusivo aqui no grupo...\"\n\nFASE 2 — Confirmação (24h antes):\n\"Amanhã às [hora]. Confirma presença com 🔥\"\n\nFASE 3 — Abertura (30–60min antes):\n\"Começando em 30 minutos. Quem está aqui vai ver ao vivo...\"\n\nFASE 4 — Pós-evento:\n\"Qual foi o maior aprendizado de hoje? Comenta aqui.\"" },
+      ]},
+      { id:"stories", icon:"📱", titulo:"Sequência de Stories", cor:"#a855f7", blocos:[
+        { nome:"Estrutura Narrativa Base", sub:"6 stories — narrativa completa", desc:"Nunca publique um story isolado quando o objetivo é vender ou posicionar.", template:"Story 1 — Quebra de padrão:\n[Imagem ou frase que não se auto-explica — só gera curiosidade]\n\nStory 2 — Contextualização:\n[Por que isso importa para o seguidor?]\n\nStory 3 e 4 — Conteúdo / Valor:\n[Um insight por story — texto grande, legível sem áudio]\n\nStory 5 — Prova ou bastidor:\n[Resultado de aluno, print de feedback, bastidor real]\n\nStory 6 — CTA com sticker nativo:\n[Link, enquete, caixinha — uma ação apenas]" },
+        { nome:"Sequência de Venda", sub:"5 stories", desc:"", template:"Story 1 — Dor (identificação)\nStory 2 — Bastidor ou contexto\nStory 3 — Resultado ou prova\nStory 4 — Oferta clara\nStory 5 — Link + urgência real" },
+        { nome:"Sequência de Autoridade", sub:"4 stories", desc:"", template:"Story 1 — Insight forte\nStory 2 — Dado ou referência\nStory 3 — Aplicação prática\nStory 4 — CTA de engajamento (caixinha ou enquete)" },
+        { nome:"Sequência de Evento", sub:"5 stories", desc:"", template:"Story 1 — Teaser (sem revelar tudo)\nStory 2 — O que vem por aí\nStory 3 — Lembrete\nStory 4 — Ao vivo ou abertura\nStory 5 — Resumo + próximo passo" },
+      ]},
+      { id:"youtube", icon:"▶️", titulo:"YouTube — Roteiro Completo", cor:"#ef4444", blocos:[
+        { nome:"Título + Thumbnail", sub:"O anúncio gratuito — mais importante que o roteiro", desc:"Um vídeo não cresce por ter muitas visualizações — cresce quando as pessoas que clicam ficam assistindo.", template:"Fórmulas de título:\n✦ Educativo: \"Como [resultado] do zero (passo a passo)\"\n✦ Storytelling: \"Como [situação dramática] em [tempo]\"\n✦ Opinião: \"Por que [crença comum] está errada\"\n✦ Caso: \"Como [pessoa/empresa] alcançou [resultado] com [estratégia]\"\n✦ Comparação: \"[Opção A] vs [Opção B]: qual vale mais a pena em [ano]?\"" },
+        { nome:"Os 5 Blocos do Roteiro", sub:"Hook → Intro → Desenvolvimento → Transições → CTA", desc:"", template:"BLOCO 1 — Hook (0–30s):\n\"[Frase impactante] → [por que isso importa] → [promessa do vídeo]\"\n\nBLOCO 2 — Introdução expandida (30s–2min):\n[Posicionamento breve + mapa do vídeo: \"vou falar sobre X, Y e Z\"]\n\nBLOCO 3 — Desenvolvimento:\n[Uma ideia por vez + exemplos concretos]\n\nBLOCO 4 — Micro-hooks (a cada 2–3 min):\n\"E no próximo ponto é onde a maioria erra de verdade.\"\n\nBLOCO 5 — CTA + Fechamento:\n1. Resumo rápido (2–3 frases)\n2. CTA de inscrição com motivo\n3. Indicação de próximo vídeo\n4. CTA de comunidade ou produto" },
+        { nome:"Descrição do Vídeo", sub:"SEO + conversão — dois objetivos", desc:"", template:"PARÁGRAFO 1 (acima do 'ver mais'):\n\"Nesse vídeo eu explico [tema] e mostro [resultado]. Se você [dor específica], esse conteúdo é direto para você.\"\n\nPARÁGRAFO 2–4:\n[Expand do conteúdo com timestamps]\n00:00 — Introdução\n[XX:XX] — [Tópico 1]\n[XX:XX] — [Tópico 2]\n\n[Link produto / comunidade]\n[Links redes sociais]\n[Link vídeo relacionado]" },
+      ]},
+    ];
+
+    const INSTAGRAM_DADOS = {
+      perfil: { nome: "@tutory.app", seguidores: 12840, seguindo: 312, posts: 187, periodo: "Mar 2026" },
+      resumo: { alcance: 48300, impressoes: 134700, engajamento: 3.8, novosSeg: 342, visitasPerfil: 5210 },
+      topPosts: [
+        { tipo: "Carrossel", titulo: "5 técnicas de estudo comprovadas", curtidas: 1240, comentarios: 87, alcance: 9800, data: "10/03/2026", taxa: 13.4 },
+        { tipo: "Reels", titulo: "Hack de memorização em 60s", curtidas: 980, comentarios: 54, alcance: 14200, data: "05/03/2026", taxa: 7.3 },
+        { tipo: "Imagem", titulo: "Resultado aluno: +40% em 30 dias", curtidas: 876, comentarios: 112, alcance: 7600, data: "14/03/2026", taxa: 13.0 },
+        { tipo: "Carrossel", titulo: "Guia de cronograma ENEM", curtidas: 743, comentarios: 43, alcance: 6900, data: "01/03/2026", taxa: 11.4 },
+        { tipo: "Reels", titulo: "O que estudar primeiro no ENEM", curtidas: 621, comentarios: 38, alcance: 11400, data: "17/03/2026", taxa: 5.8 },
+      ],
+      porTipo: [
+        { tipo: "Carrossel", posts: 8, engMedio: 11.2, alcanceMedio: 7400 },
+        { tipo: "Reels", posts: 5, engMedio: 6.8, alcanceMedio: 10900 },
+        { tipo: "Imagem", posts: 9, engMedio: 8.4, alcanceMedio: 5200 },
+        { tipo: "Stories", posts: 24, engMedio: 3.1, alcanceMedio: 2800 },
+      ],
+      melhoresHorarios: [
+        { hora: "08h", score: 62 }, { hora: "12h", score: 78 },
+        { hora: "18h", score: 95 }, { hora: "20h", score: 88 }, { hora: "22h", score: 54 },
+      ],
+    };
+
+    const TIPOS_DESEMPENHO = [
+      { id: "arte", label: "Arte", cor: "#ec4899", icon: "🎨" },
+      { id: "videos", label: "Vídeos", cor: "#ef4444", icon: "🎬" },
+      { id: "mentoria", label: "Mentoria", cor: "#6366f1", icon: "🎓" },
+      { id: "hub", label: "Hub", cor: "#ec4899", icon: "🏠" },
+      { id: "evento", label: "Evento", cor: "#f59e0b", icon: "🎪" },
+      { id: "criativos", label: "Criativos", cor: "#8b5cf6", icon: "📢" },
+    ];
+
+    const CATEGORIAS_CONTEUDO = [
+      { id: "mentoria", label: "Mentoria", icon: "🎓", cor: "#6366f1", grupo: "Principal" },
+      { id: "hub", label: "Hub", icon: "🏠", cor: "#ec4899", grupo: "Principal" },
+      { id: "evento", label: "Evento", icon: "🎪", cor: "#f59e0b", grupo: "Principal" },
+      { id: "criativo_trafego_mentoria", label: "Criativos p/ Tráfego Mentoria", icon: "📢", cor: "#8b5cf6", grupo: "Criativos para Tráfego" },
+      { id: "criativo_trafego_hub", label: "Criativos p/ Tráfego Hub", icon: "📢", cor: "#ec4899", grupo: "Criativos para Tráfego" },
+      { id: "seq_stories_hub", label: "Sequências de Stories Hub", icon: "📱", cor: "#ec4899", grupo: "Stories" },
+      { id: "seq_stories_mentoria", label: "Sequências de Stories Mentoria", icon: "📱", cor: "#6366f1", grupo: "Stories" },
+      { id: "msg_comunidade_geral", label: "Mensagem Comunidade Geral", icon: "💬", cor: "#22c55e", grupo: "Comunidade" },
+      { id: "msg_comunidade_esmeralda", label: "Mensagem Evento Esmeralda", icon: "💎", cor: "#06b6d4", grupo: "Comunidade" },
+      { id: "msg_comunidade_prata", label: "Mensagem Evento Prata", icon: "🥈", cor: "#64748b", grupo: "Comunidade" },
+      { id: "youtube", label: "Vídeos para YouTube", icon: "▶️", cor: "#ef4444", grupo: "Especiais" },
+    ];
+
+    // ===== GLOBAL STATE =====
+    let currentUser = "Gabriella";
+    let currentSection = "overview";
+    let contentItems = [];
+    let selectedContentId = null;
+    let currentModalAction = null;
+    let currentMonth = new Date(2026, 2, 19);
+
+    // Criar Conteúdo state
+    let criarSubAba = "copy";
+    let copyGerada = "";
+    let criarForm = { tema:"", pontos:"", plataforma:"mentoria", formato:"tutorial", tipo:"carrossel", quantidade:"", gancho:"", cta:"", contexto:"", linhaEditorial:"", data_postagem:"", criador:"Paulo", prioridade:"Alta" };
+    let criarMesCal = 2;
+    let criarMostrarImport = false;
+    let criarPreviewImport = [];
+    let criarErroImport = "";
+    let guiaSecao = null;
+    let guiaBloco = null;
+    let guiaCopiadoKey = null;
+
+    const PESSOAS = [
+      { nome: "Gabriella", cor: "#ec4899" },
+      { nome: "Paulo", cor: "#06b6d4" },
+      { nome: "Adriano", cor: "#f59e0b" },
+      { nome: "Cadu", cor: "#a855f7" },
+      { nome: "Let", cor: "#22c55e" },
+    ];
+
+    // ===== UTILITY FUNCTIONS =====
+    function addDias(date, dias) {
+      const d = new Date(date);
+      d.setDate(d.getDate() + dias);
+      return d;
+    }
+
+    function fmt(date) {
+      return date.toISOString().split('T')[0];
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr + 'T00:00:00');
+      return d.toLocaleDateString('pt-BR');
+    }
+
+    function getPessoaColor(nome) {
+      const p = PESSOAS.find(x => x.nome === nome);
+      return p ? p.cor : "#64748b";
+    }
+
+    function getInitials(nome) {
+      return nome.charAt(0).toUpperCase();
+    }
+
+    function randomId() {
+      return '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    // ===== INITIALIZE DATA =====
+    function initializeData() {
+      const HOJE = new Date(2026, 2, 19);
+      contentItems = [
+        { id: randomId(), titulo: "Artigo: Como estudar com IA", canal: "Blog", criador: "Paulo",
+          data_postagem: fmt(addDias(HOJE, 5)), prazo_entrega: fmt(addDias(HOJE, 3)), lead_time: 2,
+          status: "em_criacao", prioridade: "Alta", obs: "Foco em IA para ENEM",
+          categoria: "mentoria", tipo_desempenho: "mentoria",
+          entrega_link: "", entrega_desc: "", entrega_tipo: "", entrega_data: "",
+          copy: "Você sabia que estudar com inteligência artificial pode dobrar sua retenção? Neste artigo, mostramos como usar IA ao seu favor nos estudos...",
+          copy_autor: "Gabriella", copy_data: fmt(addDias(HOJE, -1)) },
+        { id: randomId(), titulo: "Carrossel: Dicas de concentração", canal: "Instagram", criador: "Adriano",
+          data_postagem: fmt(addDias(HOJE, 3)), prazo_entrega: fmt(addDias(HOJE, 1)), lead_time: 2,
+          status: "ag_aprovacao", prioridade: "Alta", obs: "",
+          categoria: "mentoria", tipo_desempenho: "arte",
+          entrega_link: "https://drive.google.com/file/carrossel-concentracao", entrega_desc: "10 slides no formato 1:1. Paleta roxa/branca. Fonte Inter.", entrega_tipo: "Arte", entrega_data: fmt(addDias(HOJE, 0)),
+          copy: "", copy_autor: "", copy_data: "" },
+        { id: randomId(), titulo: "Newsletter: Lançamento Q2", canal: "Email", criador: "Paulo",
+          data_postagem: fmt(addDias(HOJE, 7)), prazo_entrega: fmt(addDias(HOJE, 5)), lead_time: 2,
+          status: "aprovado", prioridade: "Alta", obs: "Revisar CTA final",
+          categoria: "hub", tipo_desempenho: "hub",
+          entrega_link: "https://drive.google.com/file/newsletter-q2-html", entrega_desc: "Template HTML pronto. Banner principal + 3 seções de conteúdo + CTA.", entrega_tipo: "Template HTML", entrega_data: fmt(addDias(HOJE, -1)),
+          copy: "Assunto: O Q2 chegou com novidades que vão transformar seus estudos 🚀\n\nOlá, [nome]!\n\nEste trimestre a Tutory preparou algo especial para você...",
+          copy_autor: "Let", copy_data: fmt(addDias(HOJE, -2)) },
+        { id: randomId(), titulo: "Vídeo: Apresentação da plataforma", canal: "YouTube", criador: "Adriano",
+          data_postagem: fmt(addDias(HOJE, 14)), prazo_entrega: fmt(addDias(HOJE, 11)), lead_time: 3,
+          status: "backlog", prioridade: "Média", obs: "",
+          categoria: "youtube", tipo_desempenho: "videos",
+          entrega_link: "", entrega_desc: "", entrega_tipo: "", entrega_data: "",
+          copy: "", copy_autor: "", copy_data: "" },
+        { id: randomId(), titulo: "Post: Cases de sucesso alunos", canal: "LinkedIn", criador: "Paulo",
+          data_postagem: fmt(addDias(HOJE, 10)), prazo_entrega: fmt(addDias(HOJE, 8)), lead_time: 2,
+          status: "pronto_let", prioridade: "Média", obs: "",
+          categoria: "mentoria", tipo_desempenho: "arte",
+          entrega_link: "https://drive.google.com/file/post-cases-linkedin", entrega_desc: "Arte 1200x627px com foto da aluna + depoimento. Versão com fundo azul e branco.", entrega_tipo: "Arte", entrega_data: fmt(addDias(HOJE, -2)),
+          copy: "Resultados reais de quem escolheu estudar diferente. Conheça a história de Maria, que aumentou sua nota 40% em 3 meses usando a Tutory...",
+          copy_autor: "Gabriella", copy_data: fmt(addDias(HOJE, -1)) },
+        { id: randomId(), titulo: "Artigo: Metodologia Tutory", canal: "Blog", criador: "Adriano",
+          data_postagem: fmt(addDias(HOJE, -1)), prazo_entrega: fmt(addDias(HOJE, -3)), lead_time: 2,
+          status: "em_criacao", prioridade: "Alta", obs: "ATRASADO",
+          categoria: "hub", tipo_desempenho: "hub",
+          entrega_link: "", entrega_desc: "", entrega_tipo: "", entrega_data: "",
+          copy: "", copy_autor: "", copy_data: "" },
+        { id: randomId(), titulo: "Reels: Bastidores da equipe", canal: "Instagram", criador: "Paulo",
+          data_postagem: fmt(addDias(HOJE, 18)), prazo_entrega: fmt(addDias(HOJE, 16)), lead_time: 2,
+          status: "backlog", prioridade: "Baixa", obs: "",
+          categoria: "evento", tipo_desempenho: "evento",
+          entrega_link: "", entrega_desc: "", entrega_tipo: "", entrega_data: "",
+          copy: "", copy_autor: "", copy_data: "" },
+        { id: randomId(), titulo: "E-book: Guia ENEM", canal: "Site", criador: "Adriano",
+          data_postagem: fmt(addDias(HOJE, 2)), prazo_entrega: fmt(addDias(HOJE, -1)), lead_time: 3,
+          status: "ag_aprovacao", prioridade: "Alta", obs: "Urgente!",
+          categoria: "mentoria", tipo_desempenho: "mentoria",
+          entrega_link: "https://drive.google.com/file/ebook-guia-enem-final", entrega_desc: "PDF de 48 páginas. Capa + índice + 8 capítulos + cronograma de estudos.", entrega_tipo: "Arquivo", entrega_data: fmt(HOJE),
+          copy: "Tudo que você precisa saber para o ENEM em um guia completo e gratuito. Baixe agora e comece a estudar com método.",
+          copy_autor: "Let", copy_data: fmt(HOJE) },
+        { id: randomId(), titulo: "Stories: Hack de estudos semana 12", canal: "Instagram", criador: "Let",
+          data_postagem: fmt(addDias(HOJE, 6)), prazo_entrega: fmt(addDias(HOJE, 4)), lead_time: 2,
+          status: "em_criacao", prioridade: "Média", obs: "Sequência 5 stories",
+          categoria: "seq_stories_mentoria", tipo_desempenho: "arte",
+          entrega_link: "", entrega_desc: "", entrega_tipo: "", entrega_data: "",
+          copy: "", copy_autor: "", copy_data: "" },
+        { id: randomId(), titulo: "Msg Comunidade: Novidades da semana", canal: "Instagram", criador: "Let",
+          data_postagem: fmt(addDias(HOJE, 20)), prazo_entrega: fmt(addDias(HOJE, 18)), lead_time: 2,
+          status: "backlog", prioridade: "Alta", obs: "",
+          categoria: "msg_comunidade_geral", tipo_desempenho: "mentoria",
+          entrega_link: "", entrega_desc: "", entrega_tipo: "", entrega_data: "",
+          copy: "", copy_autor: "", copy_data: "" },
+        { id: randomId(), titulo: "Criativo: Tráfego Mentoria ENEM", canal: "Instagram", criador: "Paulo",
+          data_postagem: fmt(addDias(HOJE, 4)), prazo_entrega: fmt(addDias(HOJE, 2)), lead_time: 2,
+          status: "backlog", prioridade: "Alta", obs: "Para campanha de tráfego pago",
+          categoria: "criativo_trafego_mentoria", tipo_desempenho: "criativos",
+          entrega_link: "", entrega_desc: "", entrega_tipo: "", entrega_data: "",
+          copy: "", copy_autor: "", copy_data: "" },
+        { id: randomId(), titulo: "Stories Hub: Semana 12", canal: "Instagram", criador: "Let",
+          data_postagem: fmt(addDias(HOJE, 8)), prazo_entrega: fmt(addDias(HOJE, 6)), lead_time: 2,
+          status: "backlog", prioridade: "Média", obs: "Sequência 5 stories Hub",
+          categoria: "seq_stories_hub", tipo_desempenho: "hub",
+          entrega_link: "", entrega_desc: "", entrega_tipo: "", entrega_data: "",
+          copy: "", copy_autor: "", copy_data: "" },
+        { id: randomId(), titulo: "Msg Evento Esmeralda: Boas-vindas", canal: "Email", criador: "Let",
+          data_postagem: fmt(addDias(HOJE, 3)), prazo_entrega: fmt(addDias(HOJE, 1)), lead_time: 2,
+          status: "em_criacao", prioridade: "Alta", obs: "",
+          categoria: "msg_comunidade_esmeralda", tipo_desempenho: "evento",
+          entrega_link: "", entrega_desc: "", entrega_tipo: "", entrega_data: "",
+          copy: "", copy_autor: "", copy_data: "" },
+        { id: randomId(), titulo: "YouTube: Técnicas de Memorização", canal: "YouTube", criador: "Adriano",
+          data_postagem: fmt(addDias(HOJE, 21)), prazo_entrega: fmt(addDias(HOJE, 18)), lead_time: 3,
+          status: "backlog", prioridade: "Média", obs: "Vídeo longo, +15min",
+          categoria: "youtube", tipo_desempenho: "videos",
+          entrega_link: "", entrega_desc: "", entrega_tipo: "", entrega_data: "",
+          copy: "", copy_autor: "", copy_data: "" },
+        { id: randomId(), titulo: "Msg Evento Prata: Check-in semana", canal: "Email", criador: "Let",
+          data_postagem: fmt(addDias(HOJE, 9)), prazo_entrega: fmt(addDias(HOJE, 7)), lead_time: 2,
+          status: "backlog", prioridade: "Média", obs: "",
+          categoria: "msg_comunidade_prata", tipo_desempenho: "evento",
+          entrega_link: "", entrega_desc: "", entrega_tipo: "", entrega_data: "",
+          copy: "", copy_autor: "", copy_data: "" },
+      ];
+    }
+
+    // ===== RENDER FUNCTIONS =====
+    function renderPersonList() {
+      const html = PESSOAS.map(p => `
+        <button class="person-btn ${p.nome === currentUser ? 'active' : ''}" onclick="switchPerson('${p.nome}')">
+          <span class="avatar avatar-small" style="background:${p.cor};">${getInitials(p.nome)}</span>
+          ${p.nome}
+        </button>
+      `).join('');
+      document.getElementById('person-list').innerHTML = html;
+    }
+
+    function renderTopbar() {
+      const labels = {
+        overview: "Overview",
+        fila: "Fila por Pessoa",
+        calendario: "Calendário",
+        workflow: "Fluxo de Aprovação",
+        projetos: "Projetos",
+        desempenho: "Desempenho",
+        solicitacoes: "Solicitações",
+        tipos_conteudo: "Por Tipo de Conteúdo",
+        instagram: "Instagram",
+        criar: "Criar Conteúdo",
+      };
+      document.getElementById('topbar-title').textContent = labels[currentSection] || "Dashboard";
+    }
+
+    function updateAlerts() {
+      const HOJE = new Date(2026, 2, 19);
+      let atrasados = 0, semCopy = 0, filaCAdu = 0, filaLet = 0;
+
+      contentItems.forEach(item => {
+        const prazoDate = new Date(item.prazo_entrega + 'T00:00:00');
+        if (prazoDate < HOJE && item.status !== "publicado") atrasados++;
+        if (!item.copy && item.status !== "publicado") semCopy++;
+        if (item.status === "ag_aprovacao") filaCAdu++;
+        if (item.status === "pronto_let") filaLet++;
+      });
+
+      document.getElementById('alert-atrasados').textContent = `${atrasados} Atrasados`;
+      document.getElementById('alert-sem-copy').textContent = `${semCopy} Sem Copy`;
+      document.getElementById('alert-cadu').textContent = `${filaCAdu} na fila Cadu`;
+      document.getElementById('alert-let').textContent = `${filaLet} na fila Let`;
+
+      const badge = document.getElementById('solicitacoes-badge');
+      const hasSolicitacoes = currentUser === GESTORA && atrasados > 0;
+      badge.style.display = hasSolicitacoes ? 'block' : 'none';
+      if (hasSolicitacoes) badge.textContent = atrasados;
+    }
+
+    function renderOverview() {
+      const userItems = contentItems.filter(item => {
+        if (currentUser === GESTORA) return true;
+        if (currentUser === CRIADORES[0] || currentUser === CRIADORES[1]) return item.criador === currentUser;
+        if (currentUser === APROVADOR) return item.status === "ag_aprovacao";
+        if (currentUser === PUBLICADOR) return item.status === "pronto_let";
+        return false;
+      });
+
+      const html = `
+        <h2 style="margin-bottom:20px; color:#0f172a;">Conteúdos em Andamento</h2>
+        <div class="grid-2">
+          ${userItems.map(item => `
+            <div class="card" onclick="showContentModal('${item.id}')">
+              <div class="card-header">
+                <div class="card-title">${item.titulo}</div>
+                <span class="status-pill" style="background:${getWorkflowColor(item.status)}; color:white;">${getWorkflowLabel(item.status)}</span>
+              </div>
+              <div class="card-meta">
+                <div class="card-row">
+                  <span>Canal:</span>
+                  <strong style="color:${CANAL_COR[item.canal]}">${item.canal}</strong>
+                </div>
+                <div class="card-row">
+                  <span>Criador:</span>
+                  <strong>${item.criador}</strong>
+                </div>
+                <div class="card-row">
+                  <span>Postagem:</span>
+                  <span>${formatDate(item.data_postagem)}</span>
+                </div>
+                <div class="card-row">
+                  <span class="priority-badge priority-${item.prioridade}">${item.prioridade.toUpperCase()}</span>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      document.getElementById('content-area').innerHTML = html;
+    }
+
+    function renderFila() {
+      const userItems = contentItems.filter(item => {
+        if (currentUser === CRIADORES[0] || currentUser === CRIADORES[1]) return item.criador === currentUser;
+        if (currentUser === APROVADOR) return item.status === "ag_aprovacao" || item.status === "em_criacao";
+        if (currentUser === PUBLICADOR) return item.status === "pronto_let" || item.status === "publicado";
+        if (currentUser === GESTORA) return true;
+        return false;
+      }).sort((a, b) => new Date(a.data_postagem + 'T00:00:00') - new Date(b.data_postagem + 'T00:00:00'));
+
+      const grouped = {};
+      userItems.forEach(item => {
+        const key = item.criador;
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(item);
+      });
+
+      const html = `
+        <h2 style="margin-bottom:20px; color:#0f172a;">Fila por Pessoa</h2>
+        ${Object.entries(grouped).map(([person, items]) => `
+          <div style="margin-bottom:32px;">
+            <h3 style="margin-bottom:12px; color:#475569; font-size:16px;">
+              <span class="avatar" style="background:${getPessoaColor(person)}; width:28px; height:28px; display:inline-flex; margin-right:8px; align-items:center; justify-content:center; border-radius:50%; color:white; font-weight:600; font-size:12px;">${getInitials(person)}</span>
+              ${person}
+            </h3>
+            <div class="grid-2">
+              ${items.map(item => `
+                <div class="card" onclick="showContentModal('${item.id}')">
+                  <div class="card-header">
+                    <div class="card-title">${item.titulo}</div>
+                  </div>
+                  <div class="card-meta">
+                    <div class="card-row"><span>Status:</span> <span style="color:${getWorkflowColor(item.status)}">${getWorkflowLabel(item.status)}</span></div>
+                    <div class="card-row"><span>Postagem:</span> <span>${formatDate(item.data_postagem)}</span></div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+      `;
+      document.getElementById('content-area').innerHTML = html;
+    }
+
+    function renderCalendario() {
+      const html = `
+        <div class="calendar-header">
+          <h2 style="color:#0f172a; margin:0;">Calendário Editorial</h2>
+          <div class="calendar-nav">
+            <button onclick="prevMonth()">← Anterior</button>
+            <span style="padding:8px 16px; background:white; border:1px solid #e2e8f0; border-radius:6px; font-weight:600;" id="month-label"></span>
+            <button onclick="nextMonth()">Próximo →</button>
+          </div>
+        </div>
+        <div class="calendar-grid">
+          <div class="calendar-weekdays">
+            ${['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(d => `<div class="calendar-weekday">${d}</div>`).join('')}
+          </div>
+          <div class="calendar-days" id="calendar-days"></div>
+        </div>
+      `;
+      document.getElementById('content-area').innerHTML = html;
+      renderCalendarDays();
+    }
+
+    function renderCalendarDays() {
+      const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+      const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+      const daysInMonth = lastDay.getDate();
+      const startDow = firstDay.getDay();
+
+      const label = currentMonth.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+      document.getElementById('month-label').textContent = label.charAt(0).toUpperCase() + label.slice(1);
+
+      let html = '';
+      for (let i = 0; i < startDow; i++) {
+        html += '<div class="calendar-day other-month"></div>';
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = fmt(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day));
+        const hasContent = contentItems.some(item => item.data_postagem === dateStr);
+        html += `<div class="calendar-day ${hasContent ? 'has-content' : ''}">${day}</div>`;
+      }
+
+      const remaining = (startDow + daysInMonth) % 7;
+      if (remaining !== 0) {
+        for (let i = 0; i < 7 - remaining; i++) {
+          html += '<div class="calendar-day other-month"></div>';
+        }
+      }
+
+      document.getElementById('calendar-days').innerHTML = html;
+    }
+
+    function renderWorkflow() {
+      const html = `
+        <h2 style="margin-bottom:20px; color:#0f172a;">Fluxo de Aprovação</h2>
+        <div class="kanban-container">
+          ${WORKFLOW.map(col => {
+            const items = contentItems.filter(item => item.status === col.id);
+            return `
+              <div class="kanban-column">
+                <div class="kanban-header">
+                  <span class="kanban-header-dot" style="background:${col.cor};"></span>
+                  <span>${col.label} (${items.length})</span>
+                </div>
+                ${items.map(item => `
+                  <div class="kanban-card ${item.canal.toLowerCase()}" onclick="showContentModal('${item.id}')" style="border-left-color:${CANAL_COR[item.canal]};">
+                    <div style="font-weight:600; margin-bottom:4px;">${item.titulo}</div>
+                    <div style="font-size:12px; color:#64748b; margin-bottom:4px;">${item.canal}</div>
+                    <div style="font-size:11px; color:#94a3b8;">${item.criador}</div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+      document.getElementById('content-area').innerHTML = html;
+    }
+
+    function renderProjetos() {
+      const grouped = {};
+      contentItems.forEach(item => {
+        if (!grouped[item.categoria]) grouped[item.categoria] = [];
+        grouped[item.categoria].push(item);
+      });
+
+      const html = `
+        <h2 style="margin-bottom:20px; color:#0f172a;">Projetos por Categoria</h2>
+        ${Object.entries(grouped).map(([catId, items]) => {
+          const cat = CATEGORIAS_CONTEUDO.find(c => c.id === catId);
+          return `
+            <div style="margin-bottom:32px;">
+              <h3 style="margin-bottom:12px; color:#475569; font-size:16px;">
+                <span style="font-size:20px; margin-right:8px;">${cat ? cat.icon : '📁'}</span>
+                ${cat ? cat.label : catId}
+              </h3>
+              <div class="grid-2">
+                ${items.map(item => `
+                  <div class="card" onclick="showContentModal('${item.id}')">
+                    <div class="card-header">
+                      <div class="card-title">${item.titulo}</div>
+                      <span class="priority-badge priority-${item.prioridade}">${item.prioridade.charAt(0).toUpperCase()}</span>
+                    </div>
+                    <div class="card-meta">
+                      <div class="card-row"><span>Canal:</span> <strong style="color:${CANAL_COR[item.canal]}">${item.canal}</strong></div>
+                      <div class="card-row"><span>Status:</span> <span style="color:${getWorkflowColor(item.status)}">${getWorkflowLabel(item.status)}</span></div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      `;
+      document.getElementById('content-area').innerHTML = html;
+    }
+
+    function renderDesempenho() {
+      const html = `
+        <h2 style="margin-bottom:20px; color:#0f172a;">Desempenho da Equipe</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total de Conteúdos</div>
+            <div class="stat-value">${contentItems.length}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Publicados</div>
+            <div class="stat-value">${contentItems.filter(i => i.status === 'publicado').length}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Em Criação</div>
+            <div class="stat-value">${contentItems.filter(i => i.status === 'em_criacao').length}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Aguardando Aprovação</div>
+            <div class="stat-value">${contentItems.filter(i => i.status === 'ag_aprovacao').length}</div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:32px; margin-bottom:16px; color:#0f172a;">Desempenho por Tipo</h3>
+        <div style="background:white; border-radius:12px; border:1px solid #e2e8f0; padding:20px;">
+          ${TIPOS_DESEMPENHO.map(tipo => {
+            const tipoItems = contentItems.filter(i => i.tipo_desempenho === tipo.id);
+            const percentage = contentItems.length > 0 ? Math.min(100, (tipoItems.length / contentItems.length) * 100) : 0;
+            return `
+              <div class="performance-item">
+                <div class="performance-label">
+                  <span>${tipo.icon} ${tipo.label}</span>
+                  <span>${tipoItems.length} conteúdos</span>
+                </div>
+                <div class="performance-bar">
+                  <div class="performance-fill" style="background:${tipo.cor}; width:${percentage}%;"></div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+      document.getElementById('content-area').innerHTML = html;
+    }
+
+    function renderSolicitacoes() {
+      const html = `
+        <h2 style="margin-bottom:20px; color:#0f172a;">Solicitações</h2>
+        ${currentUser === APROVADOR ? `
+          <div style="margin-bottom:32px; background:white; border-radius:12px; border:1px solid #e2e8f0; padding:20px;">
+            <h3 style="margin-bottom:16px; color:#0f172a;">Nova Solicitação</h3>
+            <p style="color:#64748b; margin-bottom:16px;">Solicitações criadas aqui serão atribuídas pela Gabriella.</p>
+          </div>
+        ` : ''}
+
+        ${currentUser === GESTORA ? `
+          <div style="background:white; border-radius:12px; border:1px solid #e2e8f0; overflow:hidden;">
+            <h3 style="padding:20px; margin:0; border-bottom:1px solid #e2e8f0; color:#0f172a;">Conteúdos em Backlog para Atribuição</h3>
+            ${contentItems.filter(i => i.status === 'backlog').length === 0 ? `
+              <div style="padding:40px; text-align:center; color:#64748b;">Nenhum conteúdo em backlog</div>
+            ` : `
+              <table>
+                <thead>
+                  <tr>
+                    <th>Título</th>
+                    <th>Categoria</th>
+                    <th>Canal</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${contentItems.filter(i => i.status === 'backlog').map(item => `
+                    <tr>
+                      <td>${item.titulo}</td>
+                      <td>${CATEGORIAS_CONTEUDO.find(c => c.id === item.categoria)?.label || item.categoria}</td>
+                      <td style="color:${CANAL_COR[item.canal]}">${item.canal}</td>
+                      <td><button class="btn btn-primary" style="padding:6px 12px; font-size:12px;" onclick="assignContent('${item.id}')">Atribuir</button></td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            `}
+          </div>
+        ` : ''}
+      `;
+      document.getElementById('content-area').innerHTML = html;
+    }
+
+    function renderTiposConteudo() {
+      const grouped = {};
+      CATEGORIAS_CONTEUDO.forEach(cat => {
+        if (!grouped[cat.grupo]) grouped[cat.grupo] = [];
+        grouped[cat.grupo].push(cat);
+      });
+
+      const html = `
+        <h2 style="margin-bottom:20px; color:#0f172a;">Tipos de Conteúdo</h2>
+        ${Object.entries(grouped).map(([grupo, cats]) => `
+          <div style="margin-bottom:32px;">
+            <h3 style="margin-bottom:12px; color:#475569; font-size:16px;">${grupo}</h3>
+            <div class="grid-2">
+              ${cats.map(cat => {
+                const items = contentItems.filter(i => i.categoria === cat.id);
+                return `
+                  <div class="card" onclick="filterByCategory('${cat.id}')" style="cursor:pointer;">
+                    <div style="font-size:32px; margin-bottom:8px;">${cat.icon}</div>
+                    <div style="font-weight:600; color:#0f172a; margin-bottom:4px;">${cat.label}</div>
+                    <div style="font-size:13px; color:#64748b;">${items.length} conteúdo${items.length !== 1 ? 's' : ''}</div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `).join('')}
+      `;
+      document.getElementById('content-area').innerHTML = html;
+    }
+
+    function renderInstagram() {
+      const html = `
+        <h2 style="margin-bottom:20px; color:#0f172a;">Instagram Analytics</h2>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Seguidores</div>
+            <div class="stat-value">${(INSTAGRAM_DADOS.perfil.seguidores / 1000).toFixed(1)}K</div>
+            <div class="stat-change">+${INSTAGRAM_DADOS.resumo.novosSeg} novos</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Alcance</div>
+            <div class="stat-value">${(INSTAGRAM_DADOS.resumo.alcance / 1000).toFixed(1)}K</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Impressões</div>
+            <div class="stat-value">${(INSTAGRAM_DADOS.resumo.impressoes / 1000).toFixed(0)}K</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Engajamento</div>
+            <div class="stat-value">${INSTAGRAM_DADOS.resumo.engajamento}%</div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:32px; margin-bottom:16px; color:#0f172a;">Posts em Destaque</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Título</th>
+                <th>Curtidas</th>
+                <th>Comentários</th>
+                <th>Alcance</th>
+                <th>Taxa Eng.</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${INSTAGRAM_DADOS.topPosts.map(post => `
+                <tr>
+                  <td><strong>${post.tipo}</strong></td>
+                  <td>${post.titulo}</td>
+                  <td>${post.curtidas.toLocaleString('pt-BR')}</td>
+                  <td>${post.comentarios}</td>
+                  <td>${post.alcance.toLocaleString('pt-BR')}</td>
+                  <td>${post.taxa}%</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top:32px; margin-bottom:16px; color:#0f172a;">Desempenho por Tipo</h3>
+        <div style="background:white; border-radius:12px; border:1px solid #e2e8f0; padding:20px;">
+          ${INSTAGRAM_DADOS.porTipo.map(tipo => `
+            <div class="performance-item">
+              <div class="performance-label">
+                <span>${tipo.tipo}</span>
+                <span>${tipo.posts} posts • Eng. ${tipo.engMedio}%</span>
+              </div>
+              <div class="performance-bar">
+                <div class="performance-fill" style="background:#ec4899; width:${tipo.engMedio * 5}%;"></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <h3 style="margin-top:32px; margin-bottom:16px; color:#0f172a;">Melhores Horários</h3>
+        <div style="background:white; border-radius:12px; border:1px solid #e2e8f0; padding:20px;">
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            ${INSTAGRAM_DADOS.melhoresHorarios.map(h => `
+              <div style="flex:1; min-width:100px; padding:12px; background:#f8fafc; border-radius:8px; text-align:center; border:1px solid #e2e8f0;">
+                <div style="font-weight:600; color:#0f172a; margin-bottom:4px;">${h.hora}</div>
+                <div style="font-size:13px; color:#64748b;">Score: ${h.score}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      document.getElementById('content-area').innerHTML = html;
+    }
+
+    // ===== COPY GENERATOR ENGINE =====
+    function gerarCopyTexto(form) {
+      const { tema, pontos, plataforma, formato, tipo, gancho, cta, contexto, linhaEditorial, quantidade } = form;
+      if (!tema.trim() || !pontos.trim()) return "";
+      const pontosArr  = pontos.split("\n").filter(p=>p.trim()).map(p=>p.trim());
+      const nomePlat   = PLATAFORMAS_CRIAR.find(p=>p.id===plataforma)?.label||"Tutory";
+      const fmtLabel   = FORMATOS_COPY.find(f=>f.id===formato)?.label||formato;
+      const linhaLabel = LINHAS_EDITORIAIS.find(l=>l.id===linhaEditorial)?.label||"";
+      const ganchoAuto = {
+        tutorial:     `Quer aprender ${tema} de vez? Segue esse passo a passo 👇`,
+        demonstracao: `Deixa eu te mostrar como ${tema} funciona na prática →`,
+        dica_rapida:  `${tema} em menos de 1 minuto ⚡`,
+        bastidores:   `A verdade por trás de ${tema} (que ninguém conta) 🎬`,
+        lista:        `${quantidade||"5"} coisas que você precisa saber sobre ${tema}`,
+        educativo:    `Os números por trás de ${tema} vão te surpreender 📊`,
+        antes_depois: `O que muda quando você entende ${tema} de verdade 🔄`,
+        polemico:     `Opinião impopular: ${tema} é diferente do que te ensinaram 🔥`,
+      };
+      const ganchoFinal = gancho||ganchoAuto[formato]||`Você precisa saber sobre ${tema} 👇`;
+      const ctaAuto = { mentoria:"Quer aprender mais? Acessa a Mentoria Tutory 🚀", hub:"Já conferiu o Hub da Tutory? Link na bio 🔗", ambos:"Acessa a Tutory e leva seus estudos a outro nível ✨" };
+      const ctaFinal = cta||ctaAuto[plataforma]||"Segue o perfil para mais conteúdo 💡";
+
+      if (tipo==="carrossel") {
+        const slides = pontosArr.map((p,i)=>`📌 Slide ${i+2}: ${p}`).join("\n");
+        return `━━━━━━━━━━━━━━━━━━━━━━━━━\n✍️ COPY — CARROSSEL\nTema: ${tema}\nFormato: ${fmtLabel} | Plataforma: ${nomePlat}\n${linhaLabel?`Linha: ${linhaLabel}`:""}  Qtd: ${quantidade||pontosArr.length+2} slides\n━━━━━━━━━━━━━━━━━━━━━━━━━\n\n📌 CAPA:\n"${ganchoFinal}"\n↓ Arraste para ver\n\n${slides}\n\n📌 Slide final (CTA):\n${ctaFinal}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━\n💬 LEGENDA SUGERIDA:\n${ganchoFinal}\n\n${pontosArr.map((p,i)=>`${i+1}. ${p}`).join("\n")}\n\nSalva para não esquecer 📌\n${ctaFinal}${contexto?`\n\n📎 ${contexto}`:""}`;
+      }
+      if (tipo==="reels") {
+        return `━━━━━━━━━━━━━━━━━━━━━━━━━\n✍️ COPY — REELS / VÍDEO\nTema: ${tema} | Formato: ${fmtLabel} | Plataforma: ${nomePlat}\n${linhaLabel?`Linha: ${linhaLabel}`:""} Duração: ${quantidade||"30–60s"}\n━━━━━━━━━━━━━━━━━━━━━━━━━\n\n🎬 ROTEIRO:\n\n[0–3s] GANCHO:\n"${ganchoFinal}"\n\n[3–${formato==="dica_rapida"?"20s":"45s"}] DESENVOLVIMENTO:\n${pontosArr.map(p=>`• ${p}`).join("\n")}\n\n[Últimos 5s] CTA:\n"${ctaFinal}"\n\n━━━━━━━━━━━━━━━━━━━━━━━━━\n💬 LEGENDA DO REELS:\n${ganchoFinal} 🎯\n${pontosArr.map(p=>`✔ ${p}`).join("\n")}\n${ctaFinal}${contexto?`\n📎 ${contexto}`:""}`;
+      }
+      if (tipo==="estatica") {
+        return `━━━━━━━━━━━━━━━━━━━━━━━━━\n✍️ COPY — ARTE ESTÁTICA\nTema: ${tema} | Formato: ${fmtLabel} | Plataforma: ${nomePlat}\n${linhaLabel?`Linha: ${linhaLabel}`:""}\n━━━━━━━━━━━━━━━━━━━━━━━━━\n\n🖼 TEXTO PARA A ARTE:\n\nHeadline:\n"${ganchoFinal}"\n${pontosArr.length>0?`\nSubtexto:\n"${pontosArr[0]}"`:""}\nCTA na arte:\n"${ctaFinal.split(" ").slice(0,5).join(" ")} →"\n\n━━━━━━━━━━━━━━━━━━━━━━━━━\n💬 LEGENDA:\n${ganchoFinal}\n${pontosArr.map((p,i)=>`${i+1}. ${p}`).join("\n")}\n${ctaFinal}${contexto?`\n📎 ${contexto}`:""}`;
+      }
+      // legenda default
+      return `━━━━━━━━━━━━━━━━━━━━━━━━━\n✍️ COPY — LEGENDA\nTema: ${tema} | Formato: ${fmtLabel} | Plataforma: ${nomePlat}\n${linhaLabel?`Linha: ${linhaLabel}`:""}\n━━━━━━━━━━━━━━━━━━━━━━━━━\n\n💬 LEGENDA:\n\n${ganchoFinal}\n\n${formato==="lista"||formato==="tutorial"?pontosArr.map((p,i)=>`${i+1}️⃣ ${p}`).join("\n\n"):formato==="educativo"?pontosArr.map(p=>`📊 ${p}`).join("\n\n"):formato==="antes_depois"?`❌ Antes: ${pontosArr[0]||"..."}\n\n✅ Depois: ${pontosArr[1]||"..."}\n\n${pontosArr.slice(2).join("\n\n")}`:pontosArr.map(p=>`→ ${p}`).join("\n\n")}\n\n${ctaFinal}${contexto?`\n\n📎 ${contexto}\n`:""}\n━━━━━━━━━━━━━━━━━━━━━━━━━\n📌 HASHTAGS:\n#tutory #estudos #${tema.toLowerCase().replace(/\s/g,"")} #aprendizado #educação`;
+    }
+
+    function calcPrazoEntrega(dataPostagem, leadTime) {
+      const d = new Date(dataPostagem + 'T12:00:00');
+      d.setDate(d.getDate() - (leadTime||5));
+      return fmt(d);
+    }
+
+    function handleArquivoImport(input) {
+      const file = input.files?.[0];
+      if (!file) return;
+      criarErroImport = "";
+      criarPreviewImport = [];
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          const texto = ev.target.result;
+          const linhas = texto.split(/\r?\n/).filter(l => l.trim());
+          if (linhas.length < 2) { criarErroImport = "Arquivo vazio ou sem dados."; renderCriar(); return; }
+          const header = linhas[0].split(",").map(h => h.trim().toLowerCase().replace(/["\s]/g,""));
+          const idxTitulo     = header.findIndex(h => h.includes("titulo") || h.includes("conteudo"));
+          const idxCanal      = header.findIndex(h => h.includes("canal"));
+          const idxCriador    = header.findIndex(h => h.includes("criador") || h.includes("responsavel"));
+          const idxData       = header.findIndex(h => h.includes("data") || h.includes("postagem"));
+          const idxPrioridade = header.findIndex(h => h.includes("prioridade"));
+          const idxObs        = header.findIndex(h => h.includes("obs") || h.includes("nota"));
+          if (idxTitulo === -1) { criarErroImport = "Coluna 'Titulo' não encontrada. Verifique o modelo."; renderCriar(); return; }
+          const leadTime = parseInt(document.getElementById('lead-time-input')?.value || 5);
+          const itens = linhas.slice(1).map((linha, i) => {
+            const cols = linha.split(",").map(c => c.trim().replace(/^"|"$/g,""));
+            const dataBruta = idxData>=0 ? cols[idxData]||"" : "";
+            const dataFmt = dataBruta.match(/^\d{4}-\d{2}-\d{2}$/) ? dataBruta
+              : dataBruta.match(/^(\d{2})\/(\d{2})\/(\d{4})$/) ? dataBruta.replace(/(\d{2})\/(\d{2})\/(\d{4})/,"$3-$2-$1")
+              : fmt(addDias(new Date(2026,2,23), i+1));
+            const prioridadeBruta = idxPrioridade>=0 ? cols[idxPrioridade]||"Média" : "Média";
+            const prioridade = ["Alta","Média","Baixa"].includes(prioridadeBruta) ? prioridadeBruta : "Média";
+            return {
+              id: randomId(),
+              titulo:        cols[idxTitulo] || `Item ${i+1}`,
+              canal:         idxCanal>=0 ? cols[idxCanal]||"Instagram" : "Instagram",
+              criador:       idxCriador>=0 ? cols[idxCriador]||"Paulo" : "Paulo",
+              data_postagem: dataFmt,
+              prazo_entrega: calcPrazoEntrega(dataFmt, leadTime),
+              status:        "backlog",
+              prioridade,
+              obs:           idxObs>=0 ? cols[idxObs]||"" : "",
+              copy:"", entrega_link:"", categoria:"mentoria", tipo_desempenho:"mentoria"
+            };
+          }).filter(it => it.titulo.trim());
+          if (itens.length === 0) { criarErroImport = "Nenhum item válido encontrado."; renderCriar(); return; }
+          criarPreviewImport = itens;
+          renderCriar();
+        } catch (err) {
+          criarErroImport = "Erro ao processar: " + err.message;
+          renderCriar();
+        }
+      };
+      reader.readAsText(file, "UTF-8");
+    }
+
+    function confirmarImportCriar() {
+      if (!criarPreviewImport.length) return;
+      contentItems = contentItems.concat(criarPreviewImport);
+      criarPreviewImport = [];
+      criarMostrarImport = false;
+      criarErroImport = "";
+      updateAlerts();
+      renderCriar();
+    }
+
+    function cancelarImportCriar() {
+      criarPreviewImport = [];
+      criarErroImport = "";
+      renderCriar();
+    }
+
+    function salvarCopyNoCalendario() {
+      if (!criarForm.data_postagem) { alert("Defina uma data de postagem."); return; }
+      const leadTime = parseInt(document.getElementById('lead-time-input')?.value || 5);
+      const tipoLabel = TIPOS_CONTEUDO_CRIAR.find(t=>t.id===criarForm.tipo)?.label||criarForm.tipo;
+      contentItems.push({
+        id: randomId(),
+        titulo: `${tipoLabel}: ${criarForm.tema}`,
+        canal: "Instagram",
+        criador: criarForm.criador,
+        data_postagem: criarForm.data_postagem,
+        prazo_entrega: calcPrazoEntrega(criarForm.data_postagem, leadTime),
+        status: "backlog",
+        prioridade: criarForm.prioridade,
+        obs: criarForm.contexto||"",
+        copy: copyGerada,
+        entrega_link: "",
+        categoria: "mentoria",
+        tipo_desempenho: "mentoria"
+      });
+      updateAlerts();
+      // show feedback
+      const btn = document.getElementById('btn-salvar-cal');
+      if (btn) { btn.textContent = "✅ Salvo!"; btn.style.background = "#22c55e"; btn.disabled = true; }
+    }
+
+    function copiarCopyGerada() {
+      if (!copyGerada) return;
+      navigator.clipboard.writeText(copyGerada).then(() => {
+        const btn = document.getElementById('btn-copiar-copy');
+        if (btn) { btn.textContent = "✓ Copiado!"; setTimeout(() => { btn.textContent = "📋 Copiar"; }, 2000); }
+      });
+    }
+
+    function copiarTemplateGuia(secId, bi) {
+      const sec = GUIA_SECOES.find(s => s.id === secId);
+      if (!sec || !sec.blocos[bi]) return;
+      const key = secId + '_' + bi;
+      navigator.clipboard.writeText(sec.blocos[bi].template).then(() => {
+        guiaCopiadoKey = key;
+        renderCriar();
+        setTimeout(() => { guiaCopiadoKey = null; renderCriar(); }, 1800);
+      });
+    }
+
+    // ===== RENDER CRIAR =====
+    function renderCriar() {
+      const MESES = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+      const DIAS_SEM = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+
+      // Build sub-tabs bar
+      const subTabsHtml = ['copy','calendario','guia'].map((id,i)=>{
+        const labels = ['✍️ Gerar Copy','📅 Calendário Editorial','📖 Guia de Copy'];
+        const active = criarSubAba === id;
+        return `<button onclick="criarSubAba='${id}';renderCriar()" style="padding:10px 20px;border-radius:10px;border:2px solid ${active?'#6366f1':'#e2e8f0'};background:${active?'#eff6ff':'#fff'};cursor:pointer;font-size:14px;font-weight:700;color:${active?'#6366f1':'#64748b'}">${labels[i]}</button>`;
+      }).join('');
+
+      let contentHtml = '';
+
+      // ── SUB-ABA: GERAR COPY ──────────────────────────────────────────────────
+      if (criarSubAba === 'copy') {
+        const tiposHtml = TIPOS_CONTEUDO_CRIAR.map(t=>`
+          <button onclick="criarForm.tipo='${t.id}';copyGerada='';renderCriar()" style="padding:8px 14px;border-radius:8px;border:2px solid ${criarForm.tipo===t.id?'#6366f1':'#e2e8f0'};background:${criarForm.tipo===t.id?'#eff6ff':'#fff'};cursor:pointer;font-size:13px;font-weight:700;color:${criarForm.tipo===t.id?'#6366f1':'#64748b'}">${t.icon} ${t.label}</button>
+        `).join('');
+        const plataformasHtml = PLATAFORMAS_CRIAR.map(p=>`
+          <button onclick="criarForm.plataforma='${p.id}';copyGerada='';renderCriar()" style="flex:1;padding:8px;border-radius:8px;border:2px solid ${criarForm.plataforma===p.id?p.cor:'#e2e8f0'};background:${criarForm.plataforma===p.id?p.cor+'18':'#fff'};cursor:pointer;font-size:13px;font-weight:700;color:${criarForm.plataforma===p.id?p.cor:'#64748b'}">${p.label}</button>
+        `).join('');
+        const formatosHtml = FORMATOS_COPY.map(f=>`<option value="${f.id}" ${criarForm.formato===f.id?'selected':''}>${f.icon} ${f.label}</option>`).join('');
+        const linhasHtml = `<option value="">— Sem linha —</option>` + LINHAS_EDITORIAIS.map(l=>`<option value="${l.id}" ${criarForm.linhaEditorial===l.id?'selected':''}>${l.label}</option>`).join('');
+        const criadoresHtml = ['Paulo','Adriano','Let'].map(c=>`<option value="${c}" ${criarForm.criador===c?'selected':''}>${c}</option>`).join('');
+
+        const outputHtml = copyGerada
+          ? `<div style="background:#fff;border-radius:14px;border:1px solid #e2e8f0">
+              <div style="padding:14px 20px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-radius:14px 14px 0 0">
+                <div style="font-size:13px;font-weight:800;color:#1e293b">${TIPOS_CONTEUDO_CRIAR.find(t=>t.id===criarForm.tipo)?.icon||''} ${TIPOS_CONTEUDO_CRIAR.find(t=>t.id===criarForm.tipo)?.label||''}</div>
+                <div style="display:flex;gap:8px">
+                  <button id="btn-copiar-copy" onclick="copiarCopyGerada()" style="border:1px solid #e2e8f0;background:#fff;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;color:#6366f1">📋 Copiar</button>
+                  <button onclick="copyGerada=gerarCopyTexto(criarForm)||'';renderCriar()" style="border:1px solid #e2e8f0;background:#fff;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;color:#64748b">🔄 Regerar</button>
+                </div>
+              </div>
+              <div style="padding:20px;max-height:400px;overflow-y:auto">
+                <pre style="margin:0;font-family:Georgia,serif;font-size:13px;line-height:1.8;color:#1e293b;white-space:pre-wrap;word-break:break-word">${copyGerada.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
+              </div>
+              <div style="padding:14px 20px;border-top:1px solid #f1f5f9;background:#fafafa;border-radius:0 0 14px 14px">
+                <div style="font-size:12px;font-weight:700;color:#64748b;margin-bottom:10px">📅 Salvar no calendário editorial</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px">
+                  <div><label style="font-size:10px;font-weight:700;color:#94a3b8;display:block;margin-bottom:3px">DATA DE POSTAGEM</label>
+                    <input type="date" value="${criarForm.data_postagem}" onchange="criarForm.data_postagem=this.value" style="width:100%;border:1px solid #e2e8f0;border-radius:6px;padding:6px 8px;font-size:12px;box-sizing:border-box"></div>
+                  <div><label style="font-size:10px;font-weight:700;color:#94a3b8;display:block;margin-bottom:3px">CRIADOR</label>
+                    <select onchange="criarForm.criador=this.value" style="width:100%;border:1px solid #e2e8f0;border-radius:6px;padding:6px 8px;font-size:12px;cursor:pointer">${criadoresHtml}</select></div>
+                  <div style="display:flex;align-items:flex-end">
+                    <button id="btn-salvar-cal" onclick="salvarCopyNoCalendario()" style="background:#6366f1;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">📅 Salvar</button>
+                  </div>
+                </div>
+              </div>
+            </div>`
+          : `<div style="background:#fff;border-radius:14px;border:2px dashed #e2e8f0;padding:40px;text-align:center">
+              <div style="font-size:48px;margin-bottom:12px">✍️</div>
+              <div style="font-size:15px;font-weight:700;color:#94a3b8">A copy vai aparecer aqui</div>
+              <div style="font-size:13px;color:#cbd5e1;margin-top:6px">Preencha o briefing e clique em "Gerar copy"</div>
+            </div>`;
+
+        contentHtml = `
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
+            <div style="background:#fff;border-radius:14px;border:1px solid #e2e8f0;padding:24px">
+              <h3 style="margin:0 0 20px;font-size:15px;font-weight:800;color:#1e293b">📝 Briefing do conteúdo</h3>
+              <div style="margin-bottom:16px">
+                <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Tipo *</label>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">${tiposHtml}</div>
+              </div>
+              <div style="margin-bottom:14px">
+                <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Plataforma *</label>
+                <div style="display:flex;gap:8px">${plataformasHtml}</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+                <div>
+                  <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Formato</label>
+                  <select onchange="criarForm.formato=this.value;copyGerada='';renderCriar()" style="width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:13px;box-sizing:border-box">${formatosHtml}</select>
+                </div>
+                <div>
+                  <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Linha Editorial</label>
+                  <select onchange="criarForm.linhaEditorial=this.value" style="width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:13px;box-sizing:border-box">${linhasHtml}</select>
+                </div>
+              </div>
+              <div style="margin-bottom:14px">
+                <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Tema / Assunto *</label>
+                <input type="text" value="${criarForm.tema.replace(/"/g,'&quot;')}" oninput="criarForm.tema=this.value;copyGerada=''" placeholder="Ex: como criar um cronograma de estudos" style="width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:13px;box-sizing:border-box">
+              </div>
+              <div style="margin-bottom:14px">
+                <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Pontos principais * <span style="color:#94a3b8;font-weight:400;text-transform:none">(um por linha)</span></label>
+                <textarea oninput="criarForm.pontos=this.value;copyGerada=''" rows="4" placeholder="Ponto 1&#10;Ponto 2&#10;Ponto 3" style="width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:13px;box-sizing:border-box;resize:vertical">${criarForm.pontos.replace(/</g,'&lt;')}</textarea>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+                <div>
+                  <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Quantidade</label>
+                  <input type="text" value="${criarForm.quantidade}" oninput="criarForm.quantidade=this.value" placeholder="Ex: 7 slides / 30s" style="width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:13px;box-sizing:border-box">
+                </div>
+                <div>
+                  <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Prioridade</label>
+                  <select onchange="criarForm.prioridade=this.value" style="width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:13px;box-sizing:border-box">
+                    <option ${criarForm.prioridade==='Alta'?'selected':''}>Alta</option>
+                    <option ${criarForm.prioridade==='Média'?'selected':''}>Média</option>
+                    <option ${criarForm.prioridade==='Baixa'?'selected':''}>Baixa</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-bottom:14px">
+                <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Gancho <span style="color:#94a3b8;font-weight:400;text-transform:none">(opcional)</span></label>
+                <input type="text" value="${criarForm.gancho.replace(/"/g,'&quot;')}" oninput="criarForm.gancho=this.value" placeholder="Gerado automaticamente se vazio..." style="width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:13px;box-sizing:border-box">
+              </div>
+              <div style="margin-bottom:14px">
+                <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">CTA <span style="color:#94a3b8;font-weight:400;text-transform:none">(opcional)</span></label>
+                <input type="text" value="${criarForm.cta.replace(/"/g,'&quot;')}" oninput="criarForm.cta=this.value" placeholder="Ex: Acessa a Mentoria Tutory 🚀" style="width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:13px;box-sizing:border-box">
+              </div>
+              <div style="margin-bottom:20px">
+                <label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">Contexto <span style="color:#94a3b8;font-weight:400;text-transform:none">(opcional)</span></label>
+                <textarea oninput="criarForm.contexto=this.value" rows="2" placeholder="Campanha especial, data comemorativa, tom de voz específico..." style="width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:13px;box-sizing:border-box;resize:vertical">${criarForm.contexto.replace(/</g,'&lt;')}</textarea>
+              </div>
+              <button onclick="const r=gerarCopyTexto(criarForm);if(r){copyGerada=r;renderCriar();}else{alert('Preencha tema e pontos principais para gerar a copy.');}"
+                style="width:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:800;cursor:pointer">
+                ✨ Gerar copy
+              </button>
+            </div>
+            <div style="position:sticky;top:24px">${outputHtml}</div>
+          </div>`;
+      }
+
+      // ── SUB-ABA: CALENDÁRIO EDITORIAL ────────────────────────────────────────
+      else if (criarSubAba === 'calendario') {
+        const primeiroDia = new Date(2026, criarMesCal, 1);
+        const grid = [];
+        for (let i=0; i<primeiroDia.getDay(); i++) grid.push(null);
+        for (let d=1; d<=new Date(2026,criarMesCal+1,0).getDate(); d++) grid.push(d);
+        const hoje2 = fmt(new Date(2026,2,23));
+
+        const importPanelHtml = criarMostrarImport ? `
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:16px">
+            <h4 style="margin:0 0 12px;font-size:14px;font-weight:800;color:#1e293b">📥 Importar calendário via planilha</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+              <div style="background:#fff;border-radius:10px;border:1px solid #e2e8f0;padding:16px">
+                <div style="font-weight:700;font-size:13px;color:#1e293b;margin-bottom:8px">📄 Upload de arquivo CSV</div>
+                <p style="font-size:12px;color:#64748b;margin:0 0 12px">Aceita arquivos <strong>.csv</strong> exportados do Google Sheets ou Excel.</p>
+                <input type="file" accept=".csv,text/csv" onchange="handleArquivoImport(this)" style="font-size:12px;width:100%">
+                ${criarErroImport ? `<div style="margin-top:8px;font-size:12px;color:#ef4444;font-weight:600">⚠ ${criarErroImport}</div>` : ''}
+              </div>
+              <div style="background:#fff;border-radius:10px;border:1px solid #e2e8f0;padding:16px">
+                <div style="font-weight:700;font-size:13px;color:#1e293b;margin-bottom:8px">📋 Como exportar para CSV</div>
+                <div style="font-size:12px;color:#475569;line-height:1.7">
+                  <div style="margin-bottom:6px"><strong>Google Sheets:</strong> Arquivo → Fazer download → Valores separados por vírgula (.csv)</div>
+                  <div style="margin-bottom:6px"><strong>Excel:</strong> Arquivo → Salvar como → CSV UTF-8</div>
+                  <div style="margin-top:10px;padding:8px 10px;background:#f1f5f9;border-radius:8px;font-size:11px;color:#64748b;line-height:1.6">
+                    <strong>Colunas esperadas:</strong><br>Titulo, Canal, Criador, Data_Postagem (AAAA-MM-DD ou DD/MM/AAAA), Prioridade (Alta/Média/Baixa), Obs
+                  </div>
+                </div>
+              </div>
+            </div>
+            ${criarPreviewImport.length > 0 ? `
+              <div>
+                <div style="font-weight:700;font-size:13px;color:#1e293b;margin-bottom:8px">👁 Pré-visualização — ${criarPreviewImport.length} item(s) encontrado(s)</div>
+                <div style="background:#fff;border-radius:8px;border:1px solid #e2e8f0;overflow:auto;max-height:180px;margin-bottom:12px">
+                  <table style="width:100%;border-collapse:collapse;font-size:12px">
+                    <thead><tr style="background:#f8fafc">${["Título","Canal","Criador","Data Postagem","Prioridade"].map(h=>`<th style="padding:6px 10px;text-align:left;font-weight:700;color:#64748b;border-bottom:1px solid #e2e8f0;white-space:nowrap">${h}</th>`).join('')}</tr></thead>
+                    <tbody>${criarPreviewImport.slice(0,8).map(it=>`<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 10px;color:#1e293b;font-weight:500;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${it.titulo}</td><td style="padding:5px 10px;color:#475569">${it.canal}</td><td style="padding:5px 10px;color:#475569">${it.criador}</td><td style="padding:5px 10px;color:#475569">${it.data_postagem}</td><td style="padding:5px 10px"><span style="font-size:11px;font-weight:700;color:${it.prioridade==='Alta'?'#ef4444':it.prioridade==='Média'?'#f59e0b':'#22c55e'}">${it.prioridade}</span></td></tr>`).join('')}${criarPreviewImport.length>8?`<tr><td colspan="5" style="padding:5px 10px;color:#94a3b8;font-size:11px">…e mais ${criarPreviewImport.length-8} item(s)</td></tr>`:''}</tbody>
+                  </table>
+                </div>
+                <div style="display:flex;gap:10px">
+                  <button onclick="confirmarImportCriar()" style="background:#22c55e;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer">✓ Confirmar importação</button>
+                  <button onclick="cancelarImportCriar()" style="background:#f1f5f9;color:#64748b;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer">✕ Cancelar</button>
+                </div>
+              </div>
+            ` : ''}
+          </div>` : '';
+
+        const calGridHtml = grid.map((dia, idx) => {
+          const ds = dia ? `2026-${String(criarMesCal+1).padStart(2,"0")}-${String(dia).padStart(2,"0")}` : null;
+          const isHoje = ds === hoje2;
+          const itens = dia ? contentItems.filter(c => c.data_postagem === ds) : [];
+          const itemsHtml = itens.map(it => {
+            const cor = CANAL_COR[it.canal]||"#6366f1";
+            return `<div title="${it.titulo}" style="background:${cor}18;border-left:3px solid ${cor};border-radius:0 4px 4px 0;padding:2px 5px;margin-bottom:2px;font-size:10px;font-weight:700;color:${cor};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${it.titulo.substring(0,18)}${it.titulo.length>18?"…":""}</div>`;
+          }).join('');
+          return `<div style="min-height:100px;padding:6px;border-right:${(idx+1)%7!==0?"1px solid #f1f5f9":"none"};border-bottom:1px solid #f1f5f9;background:${isHoje?'#eff6ff':dia?'#fff':'#fafafa'}">
+            ${dia ? `<div style="font-size:12px;font-weight:${isHoje?800:500};color:${isHoje?"#2563eb":"#94a3b8"};margin-bottom:4px">${isHoje?`<span style="background:#2563eb;color:#fff;border-radius:99px;padding:1px 6px">${dia}</span>`:dia}</div>${itemsHtml}` : ''}
+          </div>`;
+        }).join('');
+
+        contentHtml = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div>
+              <h3 style="margin:0;font-size:16px;font-weight:800;color:#1e293b">Calendário Editorial</h3>
+              <p style="margin:4px 0 0;font-size:12px;color:#94a3b8">Conteúdos criados via gerador aparecem automaticamente aqui</p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button onclick="criarMostrarImport=!criarMostrarImport;renderCriar()" style="border:1px solid #6366f1;background:${criarMostrarImport?'#eff6ff':'#fff'};border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;font-weight:700;color:#6366f1">📥 Importar planilha</button>
+              <button onclick="criarMesCal=Math.max(0,criarMesCal-1);renderCriar()" style="border:1px solid #e2e8f0;background:#fff;border-radius:8px;padding:6px 12px;cursor:pointer">‹</button>
+              <span style="font-weight:700;min-width:130px;text-align:center">${MESES[criarMesCal]} 2026</span>
+              <button onclick="criarMesCal=Math.min(11,criarMesCal+1);renderCriar()" style="border:1px solid #e2e8f0;background:#fff;border-radius:8px;padding:6px 12px;cursor:pointer">›</button>
+            </div>
+          </div>
+          ${importPanelHtml}
+          <div style="background:#fff;border-radius:12px;border:1px solid #e2e8f0;overflow:hidden">
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);background:#f8fafc;border-bottom:1px solid #e2e8f0">
+              ${DIAS_SEM.map(d=>`<div style="padding:10px 0;text-align:center;font-size:12px;font-weight:700;color:#64748b">${d}</div>`).join('')}
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr)">${calGridHtml}</div>
+          </div>`;
+      }
+
+      // ── SUB-ABA: GUIA DE COPY ────────────────────────────────────────────────
+      else if (criarSubAba === 'guia') {
+        const secaoGridHtml = GUIA_SECOES.map(sec => {
+          const active = guiaSecao === sec.id;
+          return `<button onclick="guiaSecao=guiaSecao==='${sec.id}'?null:'${sec.id}';guiaBloco=null;renderCriar()" style="background:${active?sec.cor+'18':'#fff'};border:2px solid ${active?sec.cor:'#e2e8f0'};border-radius:10px;padding:12px 14px;cursor:pointer;text-align:left;width:100%">
+            <div style="font-size:20px;margin-bottom:4px">${sec.icon}</div>
+            <div style="font-size:12px;font-weight:800;color:${active?sec.cor:'#1e293b'};line-height:1.3">${sec.titulo}</div>
+            <div style="font-size:10px;color:#94a3b8;margin-top:2px">${sec.blocos.length} template${sec.blocos.length>1?'s':''}</div>
+          </button>`;
+        }).join('');
+
+        const secaoAberta = GUIA_SECOES.find(s => s.id === guiaSecao);
+        const secaoDetalheHtml = secaoAberta ? `
+          <div style="background:#fff;border-radius:14px;border:1px solid ${secaoAberta.cor}40;padding:20px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <span style="font-size:24px">${secaoAberta.icon}</span>
+              <div style="font-size:15px;font-weight:800;color:#1e293b">${secaoAberta.titulo}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              ${secaoAberta.blocos.map((bloco, bi) => {
+                const bKey = secaoAberta.id + '_' + bi;
+                const aberto = guiaBloco === bKey;
+                const copiado = guiaCopiadoKey === bKey;
+                return `<div style="border:1px solid ${aberto?secaoAberta.cor+'60':'#e2e8f0'};border-radius:10px;overflow:hidden;background:${aberto?secaoAberta.cor+'06':'#fafafa'}">
+                  <button onclick="guiaBloco=guiaBloco==='${bKey}'?null:'${bKey}';renderCriar()" style="width:100%;background:none;border:none;padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;text-align:left">
+                    <div>
+                      <div style="font-size:13px;font-weight:800;color:#1e293b">${bloco.nome}</div>
+                      ${bloco.sub?`<div style="font-size:11px;color:#64748b;margin-top:2px">${bloco.sub}</div>`:''}
+                    </div>
+                    <span style="font-size:16px;color:${secaoAberta.cor};display:block;transform:${aberto?'rotate(180deg)':'none'};transition:transform .2s">⌄</span>
+                  </button>
+                  ${aberto ? `<div style="padding:0 16px 16px">
+                    ${bloco.desc?`<p style="font-size:12px;color:#475569;margin:0 0 12px;line-height:1.6;font-style:italic">${bloco.desc}</p>`:''}
+                    <div style="position:relative">
+                      <pre style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;font-size:12px;color:#1e293b;line-height:1.7;margin:0;white-space:pre-wrap;font-family:'Courier New',monospace">${bloco.template.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
+                      <button onclick="copiarTemplateGuia('${secaoAberta.id}', ${bi})" style="position:absolute;top:8px;right:8px;background:${copiado?secaoAberta.cor:'#fff'};color:${copiado?'#fff':secaoAberta.cor};border:1px solid ${secaoAberta.cor};border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer">${copiado?'✓ Copiado!':'📋 Copiar'}</button>
+                    </div>
+                  </div>` : ''}
+                </div>`;
+              }).join('')}
+            </div>
+          </div>` : '';
+
+        contentHtml = `
+          <div style="margin-bottom:20px">
+            <h3 style="margin:0 0 4px;font-size:16px;font-weight:800;color:#1e293b">📖 Guia de Copy & Roteiros</h3>
+            <p style="margin:0;font-size:12px;color:#94a3b8">Frameworks e templates prontos para usar. Clique em qualquer seção para expandir e copiar.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">${secaoGridHtml}</div>
+          ${secaoDetalheHtml}`;
+      }
+
+      const html = `
+        <h2 style="margin-bottom:20px;color:#0f172a">Criar Conteúdo</h2>
+        <div style="display:flex;gap:8px;margin-bottom:24px">${subTabsHtml}</div>
+        ${contentHtml}
+      `;
+      document.getElementById('content-area').innerHTML = html;
+    }
+
+    function getWorkflowColor(status) {
+      const w = WORKFLOW.find(x => x.id === status);
+      return w ? w.cor : "#94a3b8";
+    }
+
+    function getWorkflowLabel(status) {
+      const w = WORKFLOW.find(x => x.id === status);
+      return w ? w.label : status;
+    }
+
+    function showContentModal(contentId) {
+      const item = contentItems.find(x => x.id === contentId);
+      if (!item) return;
+
+      selectedContentId = contentId;
+      let actionText = "Fechar";
+      let actionVisible = true;
+
+      if (item.status === "backlog" && currentUser !== GESTORA) {
+        actionText = "Iniciar Criação";
+        currentModalAction = () => updateContentStatus(contentId, "em_criacao");
+      } else if (item.status === "em_criacao" && (currentUser === item.criador || currentUser === GESTORA)) {
+        actionText = "Entregar para Cadu";
+        currentModalAction = () => updateContentStatus(contentId, "ag_aprovacao");
+      } else if (item.status === "ag_aprovacao" && (currentUser === APROVADOR || currentUser === GESTORA)) {
+        actionText = "Aprovar";
+        currentModalAction = () => updateContentStatus(contentId, "aprovado");
+      } else if (item.status === "aprovado" && (currentUser === PUBLICADOR || currentUser === GESTORA)) {
+        actionText = "Marcar Pronto p/ Publicar";
+        currentModalAction = () => updateContentStatus(contentId, "pronto_let");
+      } else if (item.status === "pronto_let" && (currentUser === PUBLICADOR || currentUser === GESTORA)) {
+        actionText = "Publicar";
+        currentModalAction = () => updateContentStatus(contentId, "publicado");
+      } else {
+        actionVisible = false;
+      }
+
+      const html = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+          <h3 style="color:#0f172a; margin:0;">${item.titulo}</h3>
+          <span class="status-pill" style="background:${getWorkflowColor(item.status)}; color:white;">${getWorkflowLabel(item.status)}</span>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px;">
+          <div>
+            <div style="font-size:12px; color:#64748b; margin-bottom:4px;">Canal</div>
+            <div style="font-weight:600; color:${CANAL_COR[item.canal]}">${item.canal}</div>
+          </div>
+          <div>
+            <div style="font-size:12px; color:#64748b; margin-bottom:4px;">Criador</div>
+            <div style="font-weight:600;">${item.criador}</div>
+          </div>
+          <div>
+            <div style="font-size:12px; color:#64748b; margin-bottom:4px;">Data Postagem</div>
+            <div style="font-weight:600;">${formatDate(item.data_postagem)}</div>
+          </div>
+          <div>
+            <div style="font-size:12px; color:#64748b; margin-bottom:4px;">Prazo Entrega</div>
+            <div style="font-weight:600;">${formatDate(item.prazo_entrega)}</div>
+          </div>
+        </div>
+        ${item.obs ? `<div style="margin-bottom:16px; padding:12px; background:#f8fafc; border-radius:8px; border-left:4px solid #6366f1;"><strong style="color:#0f172a;">Observações:</strong> ${item.obs}</div>` : ''}
+        ${item.copy ? `<div style="margin-bottom:16px; padding:12px; background:#f8fafc; border-radius:8px; border-left:4px solid #6366f1;"><strong style="color:#0f172a;">Copy:</strong><div style="margin-top:8px; font-size:13px; color:#475569; white-space:pre-wrap; font-family:monospace;">${item.copy}</div></div>` : ''}
+      `;
+
+      document.getElementById('modal-content-body').innerHTML = html;
+      const btn = document.getElementById('modal-action-btn');
+      btn.textContent = actionText;
+      btn.style.display = actionVisible ? 'block' : 'none';
+      document.getElementById('modal-content').classList.add('show');
+    }
+
+    function showCreateModal() {
+      document.getElementById('form-titulo').value = '';
+      document.getElementById('form-data').value = fmt(addDias(new Date(2026, 2, 19), 7));
+      populateFormSelects();
+      document.getElementById('modal-create').classList.add('show');
+    }
+
+    function showCopyGeneratorModal() {
+      populateCopyForm();
+      document.getElementById('modal-copy').classList.add('show');
+    }
+
+    function populateFormSelects() {
+      const canalSelect = document.getElementById('form-canal');
+      canalSelect.innerHTML = CANAIS.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      const categoriaSelect = document.getElementById('form-categoria');
+      categoriaSelect.innerHTML = CATEGORIAS_CONTEUDO.map(c => `<option value="${c.id}">${c.label}</option>`).join('');
+
+      const criadorSelect = document.getElementById('form-criador');
+      criadorSelect.innerHTML = ['Paulo', 'Adriano', 'Let'].map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    function populateCopyForm() {
+      document.getElementById('gen-tipo').value = 'carrossel';
+      document.getElementById('gen-tema').value = '';
+      document.getElementById('gen-pontos').value = '';
+    }
+
+    function generateCopy() {
+      const tipo = document.getElementById('gen-tipo').value;
+      const tema = document.getElementById('gen-tema').value;
+      const pontos = document.getElementById('gen-pontos').value.split('\n').filter(p => p.trim());
+
+      if (!tema || pontos.length === 0) {
+        alert('Preencha tema e pelo menos um ponto');
+        return;
+      }
+
+      let copy = `==== COPY GERADA ====\n`;
+      copy += `Tipo: ${tipo}\n`;
+      copy += `Tema: ${tema}\n\n`;
+      
+      if (tipo === 'carrossel') {
+        pontos.forEach((p, i) => copy += `Slide ${i+1}: ${p}\n`);
+      } else {
+        pontos.forEach(p => copy += `• ${p}\n`);
+      }
+
+      closeModals();
+      alert('Copy gerada com sucesso! (Veja no console)');
+      console.log(copy);
+    }
+
+    function saveContent() {
+      const titulo = document.getElementById('form-titulo').value;
+      const canal = document.getElementById('form-canal').value;
+      const categoria = document.getElementById('form-categoria').value;
+      const criador = document.getElementById('form-criador').value;
+      const prioridade = document.getElementById('form-prioridade').value;
+      const data = document.getElementById('form-data').value;
+      const obs = document.getElementById('form-obs').value;
+
+      if (!titulo) {
+        alert('Preencha o título');
+        return;
+      }
+
+      const leadTime = parseInt(document.getElementById('lead-time-input').value || 5);
+      const dataPost = new Date(data + 'T00:00:00');
+      const prazoData = new Date(dataPost);
+      prazoData.setDate(prazoData.getDate() - leadTime);
+
+      contentItems.push({
+        id: randomId(),
+        titulo,
+        canal,
+        criador,
+        data_postagem: data,
+        prazo_entrega: fmt(prazoData),
+        status: "backlog",
+        prioridade,
+        obs,
+        copy: "",
+        entrega_link: "",
+        categoria,
+        tipo_desempenho: CATEGORIAS_CONTEUDO.find(c => c.id === categoria)?.id || "mentoria"
+      });
+
+      closeModals();
+      updateAlerts();
+      renderSection(currentSection);
+    }
+
+    function updateContentStatus(contentId, newStatus) {
+      const item = contentItems.find(x => x.id === contentId);
+      if (item) {
+        item.status = newStatus;
+        updateAlerts();
+        closeModals();
+        renderSection(currentSection);
+      }
+    }
+
+    function assignContent(contentId) {
+      const item = contentItems.find(x => x.id === contentId);
+      if (item) {
+        item.status = "em_criacao";
+        updateAlerts();
+        renderSection(currentSection);
+      }
+    }
+
+    function filterByCategory(categoryId) {
+      const items = contentItems.filter(i => i.categoria === categoryId);
+      const cat = CATEGORIAS_CONTEUDO.find(c => c.id === categoryId);
+
+      const html = `
+        <button class="btn btn-secondary" style="margin-bottom:20px;" onclick="renderTiposConteudo()">← Voltar</button>
+        <h2 style="margin-bottom:20px; color:#0f172a;">${cat?.label}</h2>
+        <div class="grid-2">
+          ${items.map(item => `
+            <div class="card" onclick="showContentModal('${item.id}')">
+              <div class="card-header">
+                <div class="card-title">${item.titulo}</div>
+                <span class="status-pill" style="background:${getWorkflowColor(item.status)}; color:white;">${getWorkflowLabel(item.status)}</span>
+              </div>
+              <div class="card-meta">
+                <div class="card-row"><span>Canal:</span> <strong style="color:${CANAL_COR[item.canal]}">${item.canal}</strong></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      document.getElementById('content-area').innerHTML = html;
+    }
+
+    function executeContentAction() {
+      if (currentModalAction) {
+        currentModalAction();
+      }
+    }
+
+    function closeModals() {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show'));
+      currentModalAction = null;
+    }
+
+    function switchPerson(name) {
+      currentUser = name;
+      renderPersonList();
+      renderSection(currentSection);
+      updateAlerts();
+    }
+
+    function renderSection(section) {
+      currentSection = section;
+      renderTopbar();
+
+      const sectionMap = {
+        overview: renderOverview,
+        fila: renderFila,
+        calendario: renderCalendario,
+        workflow: renderWorkflow,
+        projetos: renderProjetos,
+        desempenho: renderDesempenho,
+        solicitacoes: renderSolicitacoes,
+        tipos_conteudo: renderTiposConteudo,
+        instagram: renderInstagram,
+        criar: renderCriar,
+      };
+
+      const render = sectionMap[section];
+      if (render) render();
+
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.section === section);
+      });
+
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('mobile-open');
+      }
+    }
+
+    function prevMonth() {
+      currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
+      renderCalendarDays();
+    }
+
+    function nextMonth() {
+      currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
+      renderCalendarDays();
+    }
+
+    function toggleMobileMenu() {
+      document.getElementById('sidebar').classList.toggle('mobile-open');
+    }
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeData();
+      renderPersonList();
+      renderSection('overview');
+      updateAlerts();
+
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+          if (item.dataset.section) renderSection(item.dataset.section);
+        });
+      });
+
+      document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) closeModals();
+        });
+      });
+    });
+  </script>
+</body>
+</html>
